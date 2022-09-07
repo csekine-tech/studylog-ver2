@@ -1,25 +1,17 @@
-// import ApplicationLogo from '@/components/ApplicationLogo'
-import AuthCard from '@/components/AuthCard'
-import AuthSessionStatus from '@/components/AuthSessionStatus'
-import Button from '@/components/Button'
-import GuestLayout from '@/components/Layouts/GuestLayout'
-import Input from '@/components/Input'
 import InputError from '@/components/InputError'
-import Label from '@/components/Label'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
-import { useGoogleAuth } from '@/hooks/googleAuth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import GuestHeader from '@/components/Header/GuestHeader'
 
 const Login = () => {
     const router = useRouter()
 
     const { login, googleLogin } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: '/mypage',
     })
-    // const { googleLogin } = useGoogleAuth()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -48,96 +40,98 @@ const Login = () => {
     }
 
     return (
-        <GuestLayout>
-            <AuthCard
-                logo={
-                    <Link href="/">
-                        <a>
-                            {/* <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" /> */}
-                        </a>
-                    </Link>
-                }>
-                <p
-                    onClick={() => {
-                        googleLogin()
-                    }}>
-                    google login
-                </p>
+        <>
+            <GuestHeader />
 
-                {/* Session Status */}
-                <AuthSessionStatus className="mb-4" status={status} />
+            <div class="c-guest-bg">
+                <div class="c-container">
+                    <div class="c-guest__inner">
+                        <h3 class="u-text--white u-text-24 mb-3 text-center">
+                            ログイン
+                        </h3>
+                        <p class="c-text text-center u-text--white mb-2">
+                            初めてご利用の方は
+                            <Link href="/register">
+                                <a href="" class="u-underline">
+                                    新規会員登録
+                                </a>
+                            </Link>
+                            をしてください
+                        </p>
+                        <form onSubmit={submitForm}>
+                            <div class="mb-2">
+                                <p class="c-text u-text--white">Email</p>
+                                <input
+                                    onChange={event =>
+                                        setEmail(event.target.value)
+                                    }
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    value={email}
+                                    class="c-input--wide"
+                                />
+                                <InputError messages={errors.email} />
+                            </div>
+                            <div class="mb-2">
+                                <p class="c-text u-text--white">パスワード</p>
+                                <input
+                                    onChange={event =>
+                                        setPassword(event.target.value)
+                                    }
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    value={password}
+                                    class="c-input--wide"
+                                />
+                                <InputError messages={errors.password} />
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <label
+                                    htmlFor="remember"
+                                    class="c-text u-text--white d-flex align-items-center mb-2">
+                                    <input
+                                        type="checkbox"
+                                        id="remember"
+                                        name="remember"
+                                        class="mr-1"
+                                        onChange={event =>
+                                            setShouldRemember(
+                                                event.target.checked,
+                                            )
+                                        }
+                                    />
+                                    ログイン情報を記録する
+                                </label>
+                            </div>
 
-                <form onSubmit={submitForm}>
-                    {/* Email Address */}
-                    <div>
-                        <Label htmlFor="email">Email</Label>
-
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            className="block mt-1 w-full"
-                            onChange={event => setEmail(event.target.value)}
-                            required
-                            autoFocus
-                        />
-
-                        <InputError messages={errors.email} className="mt-2" />
+                            <div class="mb-1">
+                                <button class="c-button--wide" type="submit">
+                                    ログインする
+                                </button>
+                            </div>
+                            <div class="">
+                                <div
+                                    class="c-button--wide-ghost mb-3"
+                                    onClick={() => {
+                                        googleLogin()
+                                    }}>
+                                    Googleでログインする
+                                </div>
+                            </div>
+                            <p class="c-text text-center u-text--white mb-2">
+                                <Link href="/forgot-password">
+                                    <a className="u-underline">
+                                        パスワードをお忘れですか？
+                                    </a>
+                                </Link>
+                            </p>
+                        </form>
                     </div>
-
-                    {/* Password */}
-                    <div className="mt-4">
-                        <Label htmlFor="password">Password</Label>
-
-                        <Input
-                            id="password"
-                            type="password"
-                            value={password}
-                            className="block mt-1 w-full"
-                            onChange={event => setPassword(event.target.value)}
-                            required
-                            autoComplete="current-password"
-                        />
-
-                        <InputError
-                            messages={errors.password}
-                            className="mt-2"
-                        />
-                    </div>
-
-                    {/* Remember Me */}
-                    <div className="block mt-4">
-                        <label
-                            htmlFor="remember_me"
-                            className="inline-flex items-center">
-                            <input
-                                id="remember_me"
-                                type="checkbox"
-                                name="remember"
-                                className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                onChange={event =>
-                                    setShouldRemember(event.target.checked)
-                                }
-                            />
-
-                            <span className="ml-2 text-sm text-gray-600">
-                                Remember me
-                            </span>
-                        </label>
-                    </div>
-
-                    <div className="flex items-center justify-end mt-4">
-                        <Link href="/forgot-password">
-                            <a className="underline text-sm text-gray-600 hover:text-gray-900">
-                                Forgot your password?
-                            </a>
-                        </Link>
-
-                        <Button className="ml-3">Login</Button>
-                    </div>
-                </form>
-            </AuthCard>
-        </GuestLayout>
+                </div>
+            </div>
+        </>
     )
 }
 

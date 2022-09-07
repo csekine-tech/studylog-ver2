@@ -1,0 +1,8 @@
+.l-main{
+    &__home{
+        margin-top: 10rem;
+        @include md{
+            margin-top: 60px;
+        }
+    }
+}

@@ -1,0 +1,40 @@
+@mixin card {
+    color: white;
+    font-weight: bold;
+    border-radius: 1rem;
+    padding: 2rem;
+
+    &__title {
+        @include font(18);
+        // display: inline-block;
+    }
+
+    &__subtitle {
+        @include font(12);
+        // display: inline-block;
+        // padding-left: 1rem;
+    }
+    .c-star__wrapper{
+        margin-left: .2rem;
+    }
+
+    i {
+        font-weight: 700;
+
+        &:hover {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+    }
+}
+
+.c-card {
+    @include card;
+    background-color: map-get($colors, gray);
+}
+
+.c-card--sm {
+    @include card;
+    background-color: map-get($colors, gray);
+
+}

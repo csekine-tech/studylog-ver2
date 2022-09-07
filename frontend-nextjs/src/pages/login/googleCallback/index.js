@@ -8,7 +8,7 @@ const googleCallbackPage = () => {
     const query = router.query
     const { googleCallback } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: '/mypage',
     })
     useEffect(() => {
         if (query.state) {
@@ -16,9 +16,7 @@ const googleCallbackPage = () => {
             googleCallback(query)
         }
     }, [query])
-    // useEffect(async () => {
-    //     await googleCallback(query)
-    // }, [])
+
 
     return <>認証しています...</>
 }

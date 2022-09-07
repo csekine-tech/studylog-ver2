@@ -1,0 +1,12 @@
+.u-r-border--dot{
+    border-right: $l-gray dotted 1px;
+    @include md{
+        border: none;
+    }
+&--white{
+    border-right: white dotted 1px;
+    @include md{
+        border: none;
+    }
+}
+}

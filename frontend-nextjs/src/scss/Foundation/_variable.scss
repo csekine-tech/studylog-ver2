@@ -1,0 +1,89 @@
+$main-color:#2985C9;
+$sub-color:#ACCAE0;
+$black:#696969;
+$star:#F4CA42;
+
+$colors:(main-color:#2985C9,
+    sub-color:#ACCAE0,
+    white:white,
+    black:#696969,
+    red:#F44336,
+    pink:#E91E63,
+    purple:#9C27B0,
+    d-purple:#673AB7,
+    indigo:#3F51B5,
+    blue:#2196F3,
+    l-blue:#03A9F4,
+    cyan:#00BCD4,
+    teal:#009688,
+    green:#4CAF50,
+    l-green:#8BC34A,
+    lime:#CDDC39,
+    yellow:#FFEB3B,
+    amber:#FFC107,
+    orange:#FF9800,
+    d-orange:#FF5722,
+    brown:#795548,
+    gray:#9E9E9E,
+    bluegray:#607D8B,
+    s-gray:#cdcdcd,
+    d-gray:#6e6e6e,
+    l-gray:#A8A8A8,
+    sl-gray:#F0F0F0,
+    m-gray:#bbbbbb);
+$s-gray:#cdcdcd;
+$d-gray:#6e6e6e;
+$l-gray:#A8A8A8;
+$sl-gray:#F0F0F0;
+$m-gray:#bbbbbb;
+$link:#074091;
+
+$bg:#F4F4F4;
+
+$gradient:linear-gradient(to right, #fafcfe, #eaf1fa);
+$gradient2:linear-gradient(to left, #719edc, #c8dbf4);
+
+$media-md:768px;
+$media-sm:540px;
+$media-lg:992px;
+$p1:1rem;
+$p2:2rem;
+$p3:3rem;
+$p4:4rem;
+$p5:5rem;
+
+$rem10:1rem;
+$rem12:1.2rem;
+$rem14:1.4rem;
+$rem16:1.6rem;
+$rem18:1.8rem;
+$rem20:2.0rem;
+$rem24:2.4rem;
+$rem30:3.0rem;
+$rem36:3.6rem;
+$rem42:4.2rem;
+$rem48:4.8rem;
+$rem60:6.0rem;
+$rem72:7.2rem;
+
+@function fontPcResize($size) {
+    $dif: $size - 14;
+    $res: (14 + $dif * 1)* 0.1 *1.1;
+    @return $res;
+}
+
+@function fontMdResize($size) {
+    $dif: $size - 14;
+    $res: 14 + $dif * 0.5;
+    @return max($res, 14);
+}
+
+@mixin font($size) {
+    font-size: fontPcResize($size)+rem;
+    line-height: 1.5;
+
+    @include md {
+        font-size: fontMdResize($size)+px;
+        line-height: 1.5;
+    }
+}

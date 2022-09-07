@@ -1,0 +1,18 @@
+.c-star {
+    display: inline-block;
+    padding: .5rem 2rem;
+    @include font(24);
+    color: $black;
+    letter-spacing: .5rem;
+
+    .selected {
+        color: $star;
+    }
+}
+
+.c-star__wrapper {
+    background-color: white;
+    display: inline-block;
+    border-radius: 9999px;
+    box-shadow: inset 3px 2px 0 0 rgba($black, 0.4);
+}

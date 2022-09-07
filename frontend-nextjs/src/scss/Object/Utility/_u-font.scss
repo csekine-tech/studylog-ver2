@@ -1,0 +1,84 @@
+.u-text-12 {
+    @include font(12);
+}
+
+.u-text-14 {
+    @include font(14);
+}
+
+.u-text-16 {
+    @include font(16);
+}
+
+.u-text-18 {
+    @include font(18);
+}
+
+.u-text-20 {
+    @include font(20);
+}
+
+.u-text-22 {
+    @include font(22);
+}
+
+.u-text-24 {
+    @include font(24);
+}
+
+.u-text-26 {
+    @include font(26);
+}
+
+.u-text-30 {
+    @include font(30);
+}
+
+.u-text-36 {
+    @include font(36);
+}
+
+.u-text-40 {
+    @include font(40);
+}
+
+.u-text-48 {
+    @include font(48);
+}
+
+.u-text-60 {
+    @include font(60);
+}
+
+.u-text-72 {
+    @include font(72);
+}
+
+.u-text-bold {
+    font-weight: bold;
+}
+
+.u-text-normal {
+    font-weight: normal;
+}
+
+.u-text-md {
+    font-weight: 500;
+}
+
+.u-text-aligncenter {
+    text-align: center;
+}
+
+.u-linethrough {
+    text-decoration: line-through;
+}
+
+.u-underline {
+    text-decoration: underline;
+}
+
+a.u-underline:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}

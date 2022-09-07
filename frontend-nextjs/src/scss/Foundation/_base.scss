@@ -1,0 +1,303 @@
+html {
+  color: $black;
+  box-sizing: border-box;
+  overscroll-behavior: none;
+  font-size: calc(100vw / 2000 * 10);
+  height: 100%;
+  left: 0;
+  line-height: 1.4;
+  letter-spacing: .2em;
+
+  @include md {
+    font-size: 5px;
+  }
+}
+
+body {
+  font-family: -apple-system, "Noto Sans JP", "Helvetica Neue", HelveticaNeue, YuGothic, "Yu Gothic Medium", "Yu Gothic", Verdana, Meiryo, sans-serif;
+  left: 0;
+  opacity: 1;
+  overscroll-behavior: none;
+  top: 0;
+  width: 100vw;
+  overflow-x: hidden;
+  background-color: $bg;
+}
+
+main {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+  margin-top: 17rem;
+
+  @include md{
+    padding-top:30px;
+    padding-bottom: 30px;
+    margin-top: 60px;
+  }
+
+}
+
+
+
+.c-select__wrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 4rem;
+
+  &:after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border: 0px;
+    z-index: 2;
+    border-bottom: solid 2px $sl-gray;
+    border-right: solid 2px $sl-gray;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: translateY(50%) rotate(45deg);
+    position: absolute;
+    top: 50%;
+    right: 3rem;
+    margin-top: -8px;
+  }
+
+  @include md {
+    width: 100%;
+  }
+
+  select {
+    padding: 1rem;
+    border: 1px $sl-gray solid;
+    border-radius: .5rem;
+    @include font(16);
+    color: $black;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    min-width: 23rem;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    background-color: white;
+
+    @include md {
+      min-width: 100%;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    &::-ms-expand {
+      display: none;
+    }
+
+  }
+}
+
+.c-select__wrapper--sm {
+  position: relative;
+  display: inline-block;
+  margin-right: 2rem;
+
+  &:after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border: 0px;
+    z-index: 2;
+    border-bottom: solid 2px $sl-gray;
+    border-right: solid 2px $sl-gray;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: translateY(50%) rotate(45deg);
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    margin-top: -8px;
+  }
+
+  @include md {
+    width: 100%;
+  }
+
+  select {
+    padding: 1rem;
+    border: 1px $sl-gray solid;
+    border-radius: .5rem;
+    @include font(16);
+    color: $black;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    min-width: 9rem;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    background-color: white;
+
+    @include md {
+      min-width: 100%;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    &::-ms-expand {
+      display: none;
+    }
+
+  }
+}
+
+input[type="checkbox"] {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  color: $black;
+  border: 1px solid $sl-gray;
+  border-radius: 4px;
+  appearance: none;
+  outline: 0;
+  cursor: pointer;
+  transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
+
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: -1px;
+    left: 2px;
+    width: 7px;
+    height: 12px;
+    border-style: solid;
+    border-color: white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+  }
+
+  &:checked {
+    color: white;
+    border-color: $main-color;
+    background: $main-color;
+
+    &::before {
+      opacity: 1;
+    }
+
+    ~label::before {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+}
+
+input[type="radio"] {
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  color: $black;
+  border: 1px solid $sl-gray;
+  border-radius: 100%;
+  appearance: none;
+  outline: 0;
+  cursor: pointer;
+  transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
+
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 100%;
+    opacity: 0;
+    background-color: white;
+  }
+
+  &:checked {
+    color: white;
+    border-color: $main-color;
+    background: $main-color;
+
+    &::before {
+      opacity: 1;
+    }
+
+  }
+}
+
+input[type="date"] {
+  padding: 1rem;
+  border: 1px $sl-gray solid;
+  border-radius: .5rem;
+  @include font(16);
+  color: $black;
+  appearance: none;
+  min-width: 23rem;
+  background-color: white;
+
+  @include md {
+    min-width: 100%;
+    width: 100%;
+    margin-bottom: 10px;
+
+  }
+}
+
+
+.c-input {
+  padding: 1rem;
+  border: 1px $sl-gray solid;
+  border-radius: .5rem;
+  @include font(16);
+  color: $black;
+}
+
+.c-input--sm {
+  width: 7rem;
+  padding: 1rem;
+  border: 1px $sl-gray solid;
+  border-radius: .5rem;
+  @include font(16);
+  color: $black;
+}
+
+.c-input--wide {
+  width: 100%;
+  padding: 1rem;
+  border: 1px $sl-gray solid;
+  border-radius: .5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  @include font(16);
+  color: $black;
+}
+
+.u-md-only {
+  display: none;
+
+  @include md {
+    display: block;
+  }
+}
+
+.u-sm-only {
+  display: none;
+
+  @include sm {
+    display: block;
+  }
+}
+
+.u-pc-only {
+  display: block;
+
+  @include md {
+    display: none;
+  }
+}

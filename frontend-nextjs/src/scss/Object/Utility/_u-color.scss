@@ -1,0 +1,15 @@
+.u-bg--white {
+    background-color: white;
+}
+
+
+@each $key,
+$color in $colors {
+    .u-bg--#{$key} {
+        background-color: $color;
+    }
+
+    .u-text--#{$key} {
+        color: $color;
+    }
+}

@@ -1,0 +1,45 @@
+.c-box {
+    background-color: white;
+    padding: 1rem;
+    border-radius: .5rem;
+
+    &__title {
+        @include font(18);
+        font-weight: bold;
+        color: $black;
+        display: inline-block;
+
+        @include md {
+            display: block;
+
+        }
+
+
+        &__wrapper {
+            padding: 2rem 2rem 1rem 2rem;
+            border-bottom: 1px solid $sl-gray;
+        }
+
+    }
+
+    &__subtitle {
+        @include font(12);
+        color: $l-gray;
+        display: inline-block;
+        padding-left: 2rem;
+
+        @include md {
+            padding-left: 0;
+            display: block;
+
+        }
+    }
+
+    &__inner {
+        padding: 3rem;
+
+        @include md {
+            padding: 20px 10px;
+        }
+    }
+}

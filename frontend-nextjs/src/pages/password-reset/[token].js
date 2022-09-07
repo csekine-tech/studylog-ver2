@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import GuestHeader from '@/components/Header/GuestHeader'
 
 const PasswordReset = () => {
     const router = useRouter()
@@ -39,77 +40,70 @@ const PasswordReset = () => {
     }, [router.query.email])
 
     return (
-        <GuestLayout>
-            <AuthCard
-                logo={
-                    <Link href="/">
-                        <a>
-                            {/* <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" /> */}
-                        </a>
-                    </Link>
-                }>
-                {/* Session Status */}
-                <AuthSessionStatus className="mb-4" status={status} />
+        <>
+            <GuestHeader />
+            <div class="c-guest-bg">
+                {/* <div class="c-container"> */}
+                <div class="c-guest__inner">
+                    <h3 class="u-text--white u-text-24 mb-3 text-center">
+                        パスワード再設定フォーム
+                    </h3>
+                    <form onSubmit={submitForm}>
+                        <div class="mb-2">
+                            <p class="c-text u-text--white">Email</p>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                class="c-input--wide"
+                                value={email}
+                                onChange={event => setEmail(event.target.value)}
+                            />
+                            <InputError messages={errors.email} />
+                        </div>
+                        <div class="mb-2">
+                            <p class="c-text u-text--white">パスワード</p>
+                            <input
+                                type="password"
+                                name="pasword"
+                                id="password"
+                                class="c-input--wide"
+                                value={password}
+                                onChange={event =>
+                                    setPassword(event.target.value)
+                                }
+                            />
+                            <InputError messages={errors.password} />
+                        </div>
+                        <div class="mb-2">
+                            <p class="c-text u-text--white">
+                                パスワード（確認用）
+                            </p>
+                            <input
+                                type="password"
+                                name="passwordConfirmation"
+                                id="passwordConfirmation"
+                                class="c-input--wide"
+                                value={passwordConfirmation}
+                                onChange={event =>
+                                    setPasswordConfirmation(event.target.value)
+                                }
+                            />
+                            <InputError
+                                messages={errors.password_confirmation}
+                            />
+                        </div>
 
-                <form onSubmit={submitForm}>
-                    {/* Email Address */}
-                    <div>
-                        <Label htmlFor="email">Email</Label>
-
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            className="block mt-1 w-full"
-                            onChange={event => setEmail(event.target.value)}
-                            required
-                            autoFocus
-                        />
-
-                        <InputError messages={errors.email} className="mt-2" />
-                    </div>
-
-                    {/* Password */}
-                    <div className="mt-4">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            value={password}
-                            className="block mt-1 w-full"
-                            onChange={event => setPassword(event.target.value)}
-                            required
-                        />
-
-                        <InputError messages={errors.password} className="mt-2" />
-                    </div>
-
-                    {/* Confirm Password */}
-                    <div className="mt-4">
-                        <Label htmlFor="passwordConfirmation">
-                            Confirm Password
-                        </Label>
-
-                        <Input
-                            id="passwordConfirmation"
-                            type="password"
-                            value={passwordConfirmation}
-                            className="block mt-1 w-full"
-                            onChange={event =>
-                                setPasswordConfirmation(event.target.value)
-                            }
-                            required
-                        />
-
-                        <InputError messages={errors.password_confirmation} className="mt-2" />
-                    </div>
-
-                    <div className="flex items-center justify-end mt-4">
-                        <Button>Reset Password</Button>
-                    </div>
-                </form>
-            </AuthCard>
-        </GuestLayout>
+                        <div class="mb-1">
+                            <button class="c-button--wide" type="submit">
+                                パスワードを再設定する
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {/* </div> */}
+            </div>
+        </>
     )
 }
 

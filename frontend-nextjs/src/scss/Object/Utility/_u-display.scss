@@ -1,0 +1,47 @@
+.u-md-only {
+  display: none;
+
+  @include md {
+    display: block;
+  }
+}
+
+.u-sm-only {
+  display: none;
+
+  @include sm {
+    display: block;
+  }
+}
+
+.u-pc-only {
+  display: block;
+
+  @include md {
+    display: none;
+  }
+}
+
+.u-flex-b-80 {
+  flex-basis: 80%;
+
+  @include md {
+    flex-basis: 100%;
+  }
+}
+
+.u-flex-b-20 {
+  flex-basis: 20%;
+
+  @include md {
+    flex-basis: 100%;
+  }
+}
+
+.u-overflowx-scroll {
+  overflow-x: scroll;
+}
+
+.u-600 {
+  min-width: 600px;
+}

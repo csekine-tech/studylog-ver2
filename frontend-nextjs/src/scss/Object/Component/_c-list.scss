@@ -1,0 +1,22 @@
+.c-list {
+    &__wrapper {
+        color: $black;
+    }
+
+    &__title {
+        color: $black;
+        @include font(16);
+
+    }
+
+    ul,
+    li {
+        @include font(16);
+    }
+    li{
+        line-height: 1.8;
+    }
+
+    list-style:disc;
+    padding-left: 3rem;
+}

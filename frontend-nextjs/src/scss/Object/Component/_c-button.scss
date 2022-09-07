@@ -1,0 +1,55 @@
+@mixin button {
+    font-weight: bold;
+    @include font(16);
+    border-radius: 0.8rem;
+    text-align: center;
+    padding: .8rem 2rem;
+
+    &:hover {
+        opacity: 0.8;
+        cursor: pointer;
+    }
+}
+
+.c-button {
+    background-color: $main-color;
+    color: white;
+    @include button;
+}
+
+.c-button--wide {
+    background-color: $main-color;
+    color: white;
+    @include button;
+    width: 100%;
+}
+
+.c-button--white {
+    background-color: transparent;
+    color: $main-color;
+    @include button;
+    border: 1px solid $main-color;
+}
+
+.c-button--wide-ghost {
+    background-color: transparent;
+    color: white;
+    @include button;
+    border: 1px solid $main-color;
+    width: 100%;
+}
+
+.c-button--white {
+    background-color: white;
+    color: $main-color;
+    @include button;
+    border: 1px solid $main-color;
+}
+
+.c-button--wide-white {
+    background-color: white;
+    color: $main-color;
+    @include button;
+    border: 1px solid $main-color;
+    width: 100%;
+}

@@ -1,0 +1,24 @@
+.c-table {
+    width: 100%;
+    @include font(14);
+    color: $black;
+
+    // display: block;
+    tr:first-of-type {
+        background-color: $sl-gray;
+    }
+
+    th {
+        font-weight: bold;
+
+    }
+
+    th,
+    td {
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+        padding: 2rem 1rem;
+        text-align: center;
+    }
+}

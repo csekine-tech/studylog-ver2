@@ -1,0 +1,31 @@
+.u-img-objectcontain {
+    object-fit: contain;
+}
+
+.w-md-100 {
+    @include md {
+        width: 100%;
+    }
+}
+
+.u-img--width100 {
+    width: 100%;
+    height: auto;
+
+    img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+.u-img--height100 {
+    height: 100%;
+    width: auto;
+
+    img {
+        height: 100%;
+        width: auto;
+        object-fit: contain;
+    }
+}

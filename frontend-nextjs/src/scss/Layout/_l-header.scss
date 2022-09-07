@@ -1,0 +1,205 @@
+.l-header {
+  z-index: 100;
+  width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+  background-color: rgba(255, 255, 255, 1);
+
+  .logo {
+    width: 15rem;
+    position: absolute;
+    top: 4rem;
+    left: 6.5rem;
+    z-index: 700;
+
+    img {
+      width: 100%;
+    }
+
+    @include md {
+      width: 60px;
+      top: 20px;
+      left: 20px;
+    }
+  }
+
+
+  .l-header {
+    &__bg {
+      position: fixed;
+      width: 100%;
+      // height: 16rem;
+      transition: all .5s;
+      z-index: 700;
+      background-color: white;
+      opacity: 1.0;
+
+      @include md {
+        height: 60px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+    }
+
+    &--top {
+      position: fixed;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 10rem;
+      background-color: white;
+
+      // transition: all .5s;
+      @include md {
+        height: 60px;
+      }
+    }
+
+    &__menu {
+      display: flex;
+      justify-content: flex-end;
+      height: 100%;
+      flex-shrink: 0;
+      align-items: center;
+      padding-right: 10rem;
+      // font-weight: bold;
+      height: 5rem;
+
+
+      &__wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        position: relative;
+        width: 100%;
+
+        @include md {
+          display: none;
+        }
+      }
+
+      &__item {
+        padding: 2rem;
+        position: relative;
+        display: block;
+
+        &:hover {
+          // color: $m-blue;
+        }
+
+        &.active {
+          // color: $m-blue;
+        }
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+
+        &.current {
+          // color: $m-blue;
+        }
+
+
+        &__link {
+          position: relative;
+          @include font(14);
+          color: $main-color;
+
+          i {
+            @include font(30);
+            color: $m-gray;
+          }
+
+          &:hover {
+            opacity: 0.8;
+
+            i {
+              color: $d-gray;
+            }
+
+          }
+        }
+
+        &__popup {
+          position: relative;
+          display: block;
+          padding: 2rem;
+          border-radius: 10px;
+          width: 20rem;
+          background-color: white;
+          height: auto;
+          z-index: 9999999;
+          filter: drop-shadow(5px 5px 10px rgba($black, 0.1));
+          transition: 0.2s;
+
+          &__wrapper {
+            z-index: 999999;
+            position: fixed;
+            top: 7rem;
+            right: 5rem;
+
+          }
+
+          &__item {
+            @include font(16);
+            color: $black;
+            padding: 1rem;
+
+            &__link {
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+          }
+        }
+
+      }
+
+    }
+  }
+
+  &--sub {
+    width: 100%;
+    margin-top: 10rem;
+    border-top: 1px solid $sl-gray;
+    border-bottom: 1px solid $sl-gray;
+    color: $black;
+    background-color: white;
+
+    @include md {
+      display: none;
+    }
+
+    &__menu {
+      display: flex;
+      justify-content: space-around;
+
+      &__wrapper {
+        width: 50rem;
+        min-width: 400px;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        margin: 0 8rem 0 8rem;
+      }
+
+      &__item {
+        padding: 2rem 3rem;
+        display: block;
+
+        &__link {
+          @include font(14)
+        }
+
+        &.current {
+          border-bottom: $main-color 1px solid;
+        }
+
+        &:hover {
+          border-bottom: $main-color 1px solid;
+        }
+      }
+    }
+  }
+}
