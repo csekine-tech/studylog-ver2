@@ -43,24 +43,24 @@ const Login = () => {
         <>
             <GuestHeader />
 
-            <div class="c-guest-bg">
-                <div class="c-container">
-                    <div class="c-guest__inner">
-                        <h3 class="u-text--white u-text-24 mb-3 text-center">
+            <div className="c-guest-bg">
+                <div className="c-container">
+                    <div className="c-guest__inner">
+                        <h3 className="u-text--white u-text-24 mb-3 text-center">
                             ログイン
                         </h3>
-                        <p class="c-text text-center u-text--white mb-2">
+                        <p className="c-text text-center u-text--white mb-2">
                             初めてご利用の方は
                             <Link href="/register">
-                                <a href="" class="u-underline">
+                                <a href="" className="u-underline">
                                     新規会員登録
                                 </a>
                             </Link>
                             をしてください
                         </p>
                         <form onSubmit={submitForm}>
-                            <div class="mb-2">
-                                <p class="c-text u-text--white">Email</p>
+                            <div className="mb-2">
+                                <p className="c-text u-text--white">Email</p>
                                 <input
                                     onChange={event =>
                                         setEmail(event.target.value)
@@ -69,12 +69,12 @@ const Login = () => {
                                     name="email"
                                     id="email"
                                     value={email}
-                                    class="c-input--wide"
+                                    className="c-input--wide"
                                 />
                                 <InputError messages={errors.email} />
                             </div>
-                            <div class="mb-2">
-                                <p class="c-text u-text--white">パスワード</p>
+                            <div className="mb-2">
+                                <p className="c-text u-text--white">パスワード</p>
                                 <input
                                     onChange={event =>
                                         setPassword(event.target.value)
@@ -83,19 +83,19 @@ const Login = () => {
                                     name="password"
                                     id="password"
                                     value={password}
-                                    class="c-input--wide"
+                                    className="c-input--wide"
                                 />
                                 <InputError messages={errors.password} />
                             </div>
-                            <div class="d-flex justify-content-center">
+                            <div className="d-flex justify-content-center">
                                 <label
                                     htmlFor="remember"
-                                    class="c-text u-text--white d-flex align-items-center mb-2">
+                                    className="c-text u-text--white d-flex align-items-center mb-2">
                                     <input
                                         type="checkbox"
                                         id="remember"
                                         name="remember"
-                                        class="mr-1"
+                                        className="mr-1"
                                         onChange={event =>
                                             setShouldRemember(
                                                 event.target.checked,
@@ -106,21 +106,21 @@ const Login = () => {
                                 </label>
                             </div>
 
-                            <div class="mb-1">
-                                <button class="c-button--wide" type="submit">
+                            <div className="mb-1">
+                                <button className="c-button--wide" type="submit">
                                     ログインする
                                 </button>
                             </div>
-                            <div class="">
+                            <div className="">
                                 <div
-                                    class="c-button--wide-ghost mb-3"
+                                    className="c-button--wide-ghost mb-3"
                                     onClick={() => {
                                         googleLogin()
                                     }}>
                                     Googleでログインする
                                 </div>
                             </div>
-                            <p class="c-text text-center u-text--white mb-2">
+                            <p className="c-text text-center u-text--white mb-2">
                                 <Link href="/forgot-password">
                                     <a className="u-underline">
                                         パスワードをお忘れですか？

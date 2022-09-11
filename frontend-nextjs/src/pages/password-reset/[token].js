@@ -42,32 +42,32 @@ const PasswordReset = () => {
     return (
         <>
             <GuestHeader />
-            <div class="c-guest-bg">
-                {/* <div class="c-container"> */}
-                <div class="c-guest__inner">
-                    <h3 class="u-text--white u-text-24 mb-3 text-center">
+            <div className="c-guest-bg">
+                {/* <div className="c-container"> */}
+                <div className="c-guest__inner">
+                    <h3 className="u-text--white u-text-24 mb-3 text-center">
                         パスワード再設定フォーム
                     </h3>
                     <form onSubmit={submitForm}>
-                        <div class="mb-2">
-                            <p class="c-text u-text--white">Email</p>
+                        <div className="mb-2">
+                            <p className="c-text u-text--white">Email</p>
                             <input
                                 type="email"
                                 name="email"
                                 id="email"
-                                class="c-input--wide"
+                                className="c-input--wide"
                                 value={email}
                                 onChange={event => setEmail(event.target.value)}
                             />
                             <InputError messages={errors.email} />
                         </div>
-                        <div class="mb-2">
-                            <p class="c-text u-text--white">パスワード</p>
+                        <div className="mb-2">
+                            <p className="c-text u-text--white">パスワード</p>
                             <input
                                 type="password"
                                 name="pasword"
                                 id="password"
-                                class="c-input--wide"
+                                className="c-input--wide"
                                 value={password}
                                 onChange={event =>
                                     setPassword(event.target.value)
@@ -75,15 +75,15 @@ const PasswordReset = () => {
                             />
                             <InputError messages={errors.password} />
                         </div>
-                        <div class="mb-2">
-                            <p class="c-text u-text--white">
+                        <div className="mb-2">
+                            <p className="c-text u-text--white">
                                 パスワード（確認用）
                             </p>
                             <input
                                 type="password"
                                 name="passwordConfirmation"
                                 id="passwordConfirmation"
-                                class="c-input--wide"
+                                className="c-input--wide"
                                 value={passwordConfirmation}
                                 onChange={event =>
                                     setPasswordConfirmation(event.target.value)
@@ -94,8 +94,8 @@ const PasswordReset = () => {
                             />
                         </div>
 
-                        <div class="mb-1">
-                            <button class="c-button--wide" type="submit">
+                        <div className="mb-1">
+                            <button className="c-button--wide" type="submit">
                                 パスワードを再設定する
                             </button>
                         </div>

@@ -5,6 +5,15 @@
     color: $black;
     letter-spacing: .5rem;
 
+    span {
+        font-size: 2.64rem !important;
+        line-height: 1.5 !important;
+
+        @include md {
+            font-size: 19px !important;
+        }
+    }
+
     .selected {
         color: $star;
     }

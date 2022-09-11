@@ -1,38 +1,35 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/auth'
-import { useEffect, useState } from 'react'
-import GuestHeader from '@/components/Header/GuestHeader'
 import AuthHeader from '@/components/Header/AuthHeader'
-import WorkbookList from '@/components/LeftBox/WorkbookList'
-import TaskCard from '@/components/TaskCard/default'
-import TaskEditModal from '@/components/GlobalModal/TaskEditModal'
+import WorkbookInfoListItem from '@/components/WorkbookInfo/ListItem'
+import TaskRegisterModal from '@/components/GlobalModal/TaskRegisterModal'
 import WorkbookRegisterModal from '@/components/GlobalModal/WorkbookRegisterModal'
 
 export default function MyPage() {
     const { user } = useAuth({ middleware: 'auth' })
 
-    const [isOpenTaskEditModal, setIsOpenTaskEditModal] = useState({
-        id: null,
+    const [isOpenTaskRegisterModal, setIsOpenTaskRegisterModal] = useState({
+        workbookId: null,
         isOpen: false,
     })
     const [
         isOpenWorkbookregisterModal,
         setIsOpenWorkbookRegisterModal,
     ] = useState({
-        id: null,
         isOpen: false,
     })
-    const openTaskEditModalHandler = id => {
-        setIsOpenTaskEditModal({ id: id, isOpen: true })
+    const openTaskRegisterModalHandler = workbookId => {
+        setIsOpenTaskRegisterModal({ isOpen: true, workbookId: workbookId })
     }
     const openWorkbookRegisterModalHandler = () => {
-        setIsOpenWorkbookRegisterModal({ isOpen: true })
+        setIsOpenWorkbookRegisterModal({ id: 1, isOpen: true })
     }
     useEffect(() => {
         return () => {
-            setIsOpenTaskEditModal({ id: null, isOpen: false })
             setIsOpenWorkbookRegisterModal({ isOpen: false })
+            setIsOpenTaskRegisterModal({ workbookId: null, isOpen: false })
         }
     }, [])
 
@@ -65,67 +62,70 @@ export default function MyPage() {
                                 </Link>
                             </div>
                             <div className="row py-3">
-                                <WorkbookList />
-                                <div className="col-md-9 pl-md-2">
-                                    <div className="c-box mb-3">
-                                        <div className="c-box__title__wrapper">
-                                            <p className="c-box__title">
-                                                今日のタスク
-                                            </p>
-                                            <p className="c-box__subtitle">
-                                                問題を解いたら、得点を4段階で評価しよう
-                                            </p>
-                                        </div>
-                                        <div className="c-box__inner">
-                                            <div className="row">
-                                                <TaskCard
-                                                    color="blue"
-                                                    title="大学への数学"
-                                                    id={1}
-                                                    chapter={1}
-                                                    number={2}
-                                                    rate={0}
-                                                    openModalHandler={() => {
-                                                        openTaskEditModalHandler(
-                                                            1,
-                                                        )
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <div className="col-md-8 pr-md-2 mb-2">
                                     <div className="c-box">
                                         <div className="c-box__title__wrapper">
                                             <p className="c-box__title">
-                                                学習の成果
+                                                登録済みの教材
                                             </p>
-                                            <p className="c-box__subtitle">
-                                                全ての問題をマスターしよう
+                                        </div>
+                                        <div className="c-box__inner">
+                                            <WorkbookInfoListItem
+                                                id={1}
+                                                title="大学への数学"
+                                                allCounts={115}
+                                                finishedCounts={30}
+                                                openModalHandler={() => {
+                                                    openTaskRegisterModalHandler(
+                                                        1,
+                                                    )
+                                                }}
+                                            />
+                                            <WorkbookInfoListItem
+                                                id={2}
+                                                title="大学への数学"
+                                                allCounts={115}
+                                                finishedCounts={30}
+                                            />
+                                            <WorkbookInfoListItem
+                                                id={3}
+                                                title="大学への数学"
+                                                allCounts={115}
+                                                finishedCounts={30}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 pl-md-2 mb-2">
+                                    <div className="c-box mb-3">
+                                        <div className="c-box__title__wrapper">
+                                            <p className="c-box__title">
+                                                教材の管理
                                             </p>
                                         </div>
                                         <div className="c-box__inner">
                                             <div className="d-flex justify-content-around align-items-center c-text">
                                                 <div className="text-center u-text-bold">
                                                     <p className="u-text-16">
-                                                        残り
+                                                        未完了
                                                     </p>
-                                                    <p className="u-text-36">104</p>
-                                                    <p className="u-text-16">問</p>
+                                                    <p className="u-text-36">
+                                                        104
+                                                    </p>
+                                                    <p className="u-text-16">
+                                                        冊
+                                                    </p>
                                                 </div>
                                                 <div className="text-center u-text-bold">
                                                     <p className="u-text-16">
                                                         完了
                                                     </p>
-                                                    <p className="u-text-36">205</p>
-                                                    <p className="u-text-16">問</p>
-                                                </div>
-                                                <div className="text-center u-text-bold">
-                                                    <p className="u-text-16">
-                                                        今週
+                                                    <p className="u-text-36">
+                                                        205
                                                     </p>
-                                                    <p className="u-text-36">30</p>
-                                                    <p className="u-text-16">問</p>
+                                                    <p className="u-text-16">
+                                                        冊
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -133,13 +133,13 @@ export default function MyPage() {
                                 </div>
                             </div>
                         </div>
-                        {isOpenTaskEditModal.isOpen && (
-                            <TaskEditModal
-                                id={isOpenTaskEditModal.id}
-                                isOpen={isOpenTaskEditModal.isOpen}
+                        {isOpenTaskRegisterModal.isOpen && (
+                            <TaskRegisterModal
+                                isOpen={isOpenTaskRegisterModal.isOpen}
+                                workbookId={isOpenTaskRegisterModal.workbookId}
                                 closeHandler={() => {
-                                    setIsOpenTaskEditModal({
-                                        id: null,
+                                    setIsOpenTaskRegisterModal({
+                                        workbookId: null,
                                         isOpen: false,
                                     })
                                 }}
@@ -148,6 +148,7 @@ export default function MyPage() {
                         {isOpenWorkbookregisterModal.isOpen && (
                             <WorkbookRegisterModal
                                 isOpen={isOpenWorkbookregisterModal.isOpen}
+                                id={1}
                                 closeHandler={() => {
                                     setIsOpenWorkbookRegisterModal({
                                         isOpen: false,

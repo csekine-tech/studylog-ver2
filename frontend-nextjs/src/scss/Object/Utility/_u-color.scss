@@ -12,4 +12,7 @@ $color in $colors {
     .u-text--#{$key} {
         color: $color;
     }
+    .u-border--#{$key} {
+        border-color: $color;
+    }
 }
