@@ -7,32 +7,29 @@ import WorkbookList from '@/components/LeftBox/WorkbookList'
 import { useRouter } from 'next/router'
 import WorkbookEditModal from '@/components/GlobalModal/WorkbookEditModal'
 import WorkbookRegisterModal from '@/components/GlobalModal/WorkbookRegisterModal'
+import { useWorkbook } from '@/hooks/workbook'
 const workbookDataDefault = {
     id: null,
     name: null,
-    hasChapter: false,
-    chapterCounts: null,
-    subjectName: null,
-    chapters: { id: 1, questionCounts: 0 },
+    has_chapter: false,
+    chapter_counts: null,
+    subject_name: null,
+    subject_id: null,
+    chapters: { id: 1, question_counts: 0 },
+    image_url: '',
 }
 
 const WorkbookDetail = () => {
-    const workbookData = {
-        id: 1,
-        name: '大学への数学',
-        hasChapter: true,
-        chapterCounts: 3,
-        subjectName: '数学',
-        chapters: [
-            { number: 1, questionCounts: 10 },
-            { number: 2, questionCounts: 10 },
-            { number: 3, questionCounts: 10 },
-        ],
-    }
+    const [workbookData, setWorkbookData] = useState({})
+    const { getWorkbookDetail, getWorkbookList } = useWorkbook()
+    const [workbookList, setWorkbookList] = useState([])
 
     const { user } = useAuth({ middleware: 'auth' })
     const router = useRouter()
-    const id = Number(router.query.id)
+    const [id, setId] = useState(Number(router.query.id))
+
+    const { destroyWorkbook } = useWorkbook()
+
     const [isOpenWorkbookEditModal, setIsOpenWorkbookEditModal] = useState({
         id: null,
         isOpen: false,
@@ -46,7 +43,7 @@ const WorkbookDetail = () => {
     })
     const openWorkbookEditModalHandler = workbookData => {
         setIsOpenWorkbookEditModal({
-            id: 1,
+            id: id,
             isOpen: true,
             workbookData: workbookData,
         })
@@ -54,8 +51,13 @@ const WorkbookDetail = () => {
     const openWorkbookRegisterModalHandler = () => {
         setIsOpenWorkbookRegisterModal({ isOpen: true })
     }
+    const getWorkbookListHandler = () => {
+        getWorkbookList({ setWorkbookList })
+    }
+
     useEffect(() => {
         return () => {
+            setId(Number(router.query.id))
             setIsOpenWorkbookRegisterModal({ isOpen: false })
             setIsOpenWorkbookEditModal({
                 id: null,
@@ -64,6 +66,14 @@ const WorkbookDetail = () => {
             })
         }
     }, [])
+    useEffect(() => {
+        setId(Number(router.query.id))
+    }, [router])
+    useEffect(() => {
+        if (!Number.isNaN(id)) {
+            getWorkbookDetail({ id: id, setWorkbookData })
+        }
+    }, [id])
 
     return (
         <>
@@ -94,21 +104,27 @@ const WorkbookDetail = () => {
                                 </Link>
                             </div>
                             <div className="row py-3">
-                                <WorkbookList />
+                                <WorkbookList
+                                    workbookList={workbookList}
+                                    getWorkbookList={getWorkbookListHandler}
+                                    className="d-none d-md-block"
+                                />
                                 <div className="col-md-9 pl-md-2 mb-2">
                                     <div className="c-box mb-3">
                                         <div className="c-box__title__wrapper">
-                                            <p className="c-box__title">教材情報</p>
+                                            <p className="c-box__title">
+                                                教材情報
+                                            </p>
                                         </div>
                                         <div className="c-box__inner">
                                             <div className="row">
-                                                <div className="col-10">
-                                                    <div className="row pt-2 c-text">
+                                                <div className="col-9 col-md-10">
+                                                    <div className="row pt-2 c-text pr-2">
                                                         <p className="col-3">
                                                             教材名
                                                         </p>
                                                         <p className="col-9">
-                                                            {workbookData.name}
+                                                            {workbookData?.name}
                                                         </p>
                                                     </div>
                                                     <div className="row pt-2 c-text">
@@ -117,7 +133,7 @@ const WorkbookDetail = () => {
                                                         </p>
                                                         <p className="col-9">
                                                             {
-                                                                workbookData.subjectName
+                                                                workbookData?.subject_name
                                                             }
                                                         </p>
                                                     </div>
@@ -126,16 +142,16 @@ const WorkbookDetail = () => {
                                                             構成
                                                         </p>
                                                         <p className="col-9">
-                                                            {workbookData.hasChapter
+                                                            {workbookData?.has_chapter
                                                                 ? '章立て'
                                                                 : '通し'}
                                                         </p>
                                                     </div>
-                                                    {workbookData.hasChapter && (
-                                                        <div className="pl-4 py-1">
+                                                    {workbookData && (
+                                                        <div className=" py-1">
                                                             {Array.from(
                                                                 Array(
-                                                                    workbookData.chapterCounts,
+                                                                    workbookData?.chapter_counts,
                                                                 ).keys(),
                                                             ).map(number => {
                                                                 return (
@@ -144,19 +160,28 @@ const WorkbookDetail = () => {
                                                                         key={
                                                                             number
                                                                         }>
-                                                                        <p className="col-2">
-                                                                            {number +
-                                                                                1}
-                                                                            章
-                                                                        </p>
-                                                                        <p className="col-10">
-                                                                            {
+                                                                        {workbookData.has_chapter ===
+                                                                            1 && (
+                                                                            <p className="col-3">
+                                                                                {number +
+                                                                                    1}
+
+                                                                                章
+                                                                            </p>
+                                                                        )}
+                                                                        {workbookData.has_chapter !==
+                                                                            1 && (
+                                                                            <p className="col-3">
+                                                                                全
+                                                                            </p>
+                                                                        )}
+                                                                        <p className="col-9">
+                                                                            {workbookData.chapters &&
                                                                                 workbookData
                                                                                     .chapters[
                                                                                     number
                                                                                 ]
-                                                                                    .questionCounts
-                                                                            }
+                                                                                    .question_counts}
                                                                             問
                                                                         </p>
                                                                     </div>
@@ -165,36 +190,56 @@ const WorkbookDetail = () => {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className="col-2">
+                                                <div className="col-3 col-md-2">
                                                     <img
-                                                        src="/img/img-dummy.png"
+                                                        src={
+                                                            workbookData.image_url
+                                                                ? process.env
+                                                                      .NEXT_PUBLIC_STORAGE_URL +
+                                                                  '/' +
+                                                                  workbookData.image_url
+                                                                : '/img/img-dummy.png'
+                                                        }
                                                         alt=""
                                                         className="w-100"
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="row pt-4">
-                                                <div className="col-md-6 pr-md-2 mb-1">
-                                                    <div
-                                                        className="c-button--wide-white"
-                                                        onClick={() => {
-                                                            openWorkbookEditModalHandler(
-                                                                workbookData,
-                                                            )
-                                                        }}>
-                                                        編集する
+                                            {workbookData.id && (
+                                                <div className="row pt-4">
+                                                    <div className="col-md-6 pl-md-1 order-md-2 mb-1">
+                                                        <div
+                                                            className="c-button--wide-white"
+                                                            onClick={() => {
+                                                                openWorkbookEditModalHandler(
+                                                                    workbookData,
+                                                                )
+                                                            }}>
+                                                            編集する
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6 pr-md-1 order-md-1 mb-1">
+                                                        <button
+                                                            className="c-button--wide-white"
+                                                            onClick={() => {
+                                                                const result = window.confirm(
+                                                                    `${workbookData?.name}に関連する全てのデータが削除されます。本当に削除してよろしいですか？`,
+                                                                )
+                                                                if (result) {
+                                                                    destroyWorkbook(
+                                                                        id,
+                                                                    )
+                                                                }
+                                                            }}>
+                                                            削除する
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-6 pl-md-2 mb-1">
-                                                    <div className="c-button--wide-white">
-                                                        削除する
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            )}
                                         </div>
                                     </div>
                                     <div>
-                                        <Link href="/workbook/plan/1">
+                                        <Link href={`/workbook/plan/${id}`}>
                                             <button className="c-button--wide">
                                                 この教材の予定を管理する
                                             </button>
@@ -206,11 +251,19 @@ const WorkbookDetail = () => {
                         {isOpenWorkbookEditModal.isOpen && (
                             <WorkbookEditModal
                                 isOpen={isOpenWorkbookEditModal.isOpen}
-                                id={1}
+                                id={isOpenWorkbookEditModal.id}
                                 workbookData={
                                     isOpenWorkbookEditModal.workbookData
                                 }
                                 closeHandler={() => {
+                                    if (!Number.isNaN(id)) {
+                                        getWorkbookDetail({
+                                            id: id,
+                                            setWorkbookData,
+                                        })
+                                    }
+                                    getWorkbookList({ setWorkbookList })
+
                                     setIsOpenWorkbookEditModal({
                                         id: null,
                                         isOpen: false,
@@ -223,6 +276,7 @@ const WorkbookDetail = () => {
                             <WorkbookRegisterModal
                                 isOpen={isOpenWorkbookregisterModal.isOpen}
                                 closeHandler={() => {
+                                    getWorkbookListHandler()
                                     setIsOpenWorkbookRegisterModal({
                                         isOpen: false,
                                     })

@@ -1,17 +1,23 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/auth'
 import AuthHeader from '@/components/Header/AuthHeader'
 import WorkbookInfoListItem from '@/components/WorkbookInfo/ListItem'
 import TaskRegisterModal from '@/components/GlobalModal/TaskRegisterModal'
 import WorkbookRegisterModal from '@/components/GlobalModal/WorkbookRegisterModal'
+import { useWorkbook } from '@/hooks/workbook'
+import { useResult } from '@/hooks/result'
 
 export default function MyPage() {
     const { user } = useAuth({ middleware: 'auth' })
+    const [workbookList, setWorkbookList] = useState([])
+    const { getWorkbookList } = useWorkbook()
+    const [result, setResult] = useState()
+    const { getResult } = useResult()
+    const [filteringMode, setFilteringMode] = useState(1)
 
     const [isOpenTaskRegisterModal, setIsOpenTaskRegisterModal] = useState({
-        workbookId: null,
+        workbook_id: '',
         isOpen: false,
     })
     const [
@@ -20,16 +26,33 @@ export default function MyPage() {
     ] = useState({
         isOpen: false,
     })
-    const openTaskRegisterModalHandler = workbookId => {
-        setIsOpenTaskRegisterModal({ isOpen: true, workbookId: workbookId })
+    const openTaskRegisterModalHandler = workbook_id => {
+        let wData = {}
+        Object.keys(workbookList).map(index => {
+            if (workbookList[index].id === workbook_id) {
+                wData = workbookList[index]
+            }
+        })
+        setIsOpenTaskRegisterModal({
+            isOpen: true,
+            workbook_id: workbook_id,
+            workbookData: wData,
+        })
     }
     const openWorkbookRegisterModalHandler = () => {
-        setIsOpenWorkbookRegisterModal({ id: 1, isOpen: true })
+        setIsOpenWorkbookRegisterModal({ isOpen: true })
     }
+    const filter = () => {}
+
     useEffect(() => {
+        getWorkbookList({ setWorkbookList })
+        getResult({ setResult })
         return () => {
+            setWorkbookList([])
+            setResult()
+            setFilteringMode(1)
+            setIsOpenTaskRegisterModal({ workbook_id: '', isOpen: false })
             setIsOpenWorkbookRegisterModal({ isOpen: false })
-            setIsOpenTaskRegisterModal({ workbookId: null, isOpen: false })
         }
     }, [])
 
@@ -53,13 +76,13 @@ export default function MyPage() {
                                         教材を登録する
                                     </div>
                                 </div>
-                                <Link href="/task">
+                                {/* <Link href="/task">
                                     <div className="col-md-4 px-md-2 py-1">
                                         <div className="c-button">
                                             学習を記録する
                                         </div>
                                     </div>
-                                </Link>
+                                </Link> */}
                             </div>
                             <div className="row py-3">
                                 <div className="col-md-8 pr-md-2 mb-2">
@@ -68,31 +91,92 @@ export default function MyPage() {
                                             <p className="c-box__title">
                                                 登録済みの教材
                                             </p>
+                                            <p className="c-box__subtitle">
+                                                <span
+                                                    onClick={() => {
+                                                        setFilteringMode(1)
+                                                    }}
+                                                    className={
+                                                        filteringMode == 1
+                                                            ? 'u-text--black'
+                                                            : ''
+                                                    }>
+                                                    全て表示　
+                                                </span>
+                                                <span
+                                                    onClick={() => {
+                                                        setFilteringMode(2)
+                                                    }}
+                                                    className={
+                                                        filteringMode == 2
+                                                            ? 'u-text--black'
+                                                            : ''
+                                                    }>
+                                                    未完了のみ表示　
+                                                </span>
+                                                <span
+                                                    onClick={() => {
+                                                        setFilteringMode(3)
+                                                    }}
+                                                    className={
+                                                        filteringMode == 3
+                                                            ? 'u-text--black'
+                                                            : ''
+                                                    }>
+                                                    完了済みのみ表示
+                                                </span>
+                                            </p>
                                         </div>
                                         <div className="c-box__inner">
-                                            <WorkbookInfoListItem
-                                                id={1}
-                                                title="大学への数学"
-                                                allCounts={115}
-                                                finishedCounts={30}
-                                                openModalHandler={() => {
-                                                    openTaskRegisterModalHandler(
-                                                        1,
+                                            {workbookList?.map(workbook => {
+                                                if (
+                                                    filteringMode === 1 ||
+                                                    (filteringMode == 2 &&
+                                                        workbook.is_finished ==
+                                                            0) ||
+                                                    (filteringMode == 3 &&
+                                                        workbook.is_finished ==
+                                                            1)
+                                                ) {
+                                                    return (
+                                                        <WorkbookInfoListItem
+                                                            id={workbook.id}
+                                                            key={workbook.id}
+                                                            title={
+                                                                workbook.name
+                                                            }
+                                                            subject_name={
+                                                                workbook.subject_name
+                                                            }
+                                                            allCounts={
+                                                                workbook.question_counts
+                                                            }
+                                                            finishedCounts={
+                                                                workbook.finished_question_counts
+                                                            }
+                                                            openModalHandler={() => {
+                                                                openTaskRegisterModalHandler(
+                                                                    workbook.id,
+                                                                )
+                                                            }}
+                                                            imgUrl={
+                                                                workbook.image_url
+                                                                    ? process
+                                                                          .env
+                                                                          .NEXT_PUBLIC_STORAGE_URL +
+                                                                      '/' +
+                                                                      workbook.image_url
+                                                                    : '/img/img-dummy.png'
+                                                            }
+                                                        />
                                                     )
-                                                }}
-                                            />
-                                            <WorkbookInfoListItem
-                                                id={2}
-                                                title="大学への数学"
-                                                allCounts={115}
-                                                finishedCounts={30}
-                                            />
-                                            <WorkbookInfoListItem
-                                                id={3}
-                                                title="大学への数学"
-                                                allCounts={115}
-                                                finishedCounts={30}
-                                            />
+                                                }
+                                            })}
+                                            {workbookList?.length === 0 && (
+                                                <p className="c-text">
+                                                    教材は登録されていません。
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +194,10 @@ export default function MyPage() {
                                                         未完了
                                                     </p>
                                                     <p className="u-text-36">
-                                                        104
+                                                        {result
+                                                            ? result.workbook_counts -
+                                                              result.finished_workbook_counts
+                                                            : 0}
                                                     </p>
                                                     <p className="u-text-16">
                                                         冊
@@ -121,7 +208,9 @@ export default function MyPage() {
                                                         完了
                                                     </p>
                                                     <p className="u-text-36">
-                                                        205
+                                                        {result
+                                                            ? result.finished_workbook_counts
+                                                            : 0}
                                                     </p>
                                                     <p className="u-text-16">
                                                         冊
@@ -136,20 +225,28 @@ export default function MyPage() {
                         {isOpenTaskRegisterModal.isOpen && (
                             <TaskRegisterModal
                                 isOpen={isOpenTaskRegisterModal.isOpen}
-                                workbookId={isOpenTaskRegisterModal.workbookId}
+                                workbook_id={
+                                    isOpenTaskRegisterModal.workbook_id
+                                }
                                 closeHandler={() => {
                                     setIsOpenTaskRegisterModal({
-                                        workbookId: null,
+                                        workbook_id: null,
                                         isOpen: false,
+                                        workbookData: {},
                                     })
                                 }}
+                                workbookData={
+                                    isOpenTaskRegisterModal.workbookData
+                                }
+                                workbookList={workbookList}
                             />
                         )}
                         {isOpenWorkbookregisterModal.isOpen && (
                             <WorkbookRegisterModal
                                 isOpen={isOpenWorkbookregisterModal.isOpen}
-                                id={1}
                                 closeHandler={() => {
+                                    getWorkbookList({ setWorkbookList })
+                                    getResult({ setResult })
                                     setIsOpenWorkbookRegisterModal({
                                         isOpen: false,
                                     })

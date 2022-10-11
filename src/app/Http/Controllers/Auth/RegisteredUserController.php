@@ -28,6 +28,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -38,6 +39,12 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        return response()->noContent();
+    }
+
+    public function destroy()
+    {
+        User::find(Auth::id())->delete();
         return response()->noContent();
     }
 }

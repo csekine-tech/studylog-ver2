@@ -4,17 +4,58 @@
     border-radius: 0.8rem;
     text-align: center;
     padding: .8rem 2rem;
+    box-sizing: border-box;
+    position: relative;
+    // min-height: 5rem;
+
+    // @include md {
+    //     min-height: fontMdResize(16)+px;
+    // }
 
     &:hover {
         opacity: 0.8;
         cursor: pointer;
     }
+
+
+    @keyframes icon {
+        0% {
+            right: -9px;
+        }
+
+        100% {
+            right: -5px;
+        }
+    }
+
+    @keyframes border {
+        0% {
+            border: 3px solid $red;
+
+        }
+
+        100% {
+            border: 3px solid white;
+
+        }
+    }
+
 }
+
+#box {
+    display: block;
+    width: 10px;
+    height: 100px;
+    background: gold;
+}
+
+
 
 .c-button {
     background-color: $main-color;
     color: white;
     @include button;
+
 }
 
 .c-button--wide {

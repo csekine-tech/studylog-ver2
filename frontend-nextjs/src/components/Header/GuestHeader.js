@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import GuestMobileHeader from './GuestMobileHeader'
 const GuestHeader = () => {
     return (
         <header className="l-header sticky-top">
@@ -34,6 +35,7 @@ const GuestHeader = () => {
                             </li>
                         </ul>
                     </div>
+                    <GuestMobileHeader />
                 </div>
             </div>
         </header>

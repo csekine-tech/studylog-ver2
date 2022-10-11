@@ -1,5 +1,4 @@
 import { useAuth } from '@/hooks/auth'
-import { useGoogleAuth } from '@/hooks/googleAuth'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Head from 'next/head'

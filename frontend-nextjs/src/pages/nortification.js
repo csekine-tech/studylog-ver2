@@ -1,6 +1,6 @@
 import AuthHeader from '@/components/Header/AuthHeader'
 
-const NotFoundPage = () => {
+const Nortification = () => {
     return (
         <>
             <AuthHeader />
@@ -24,4 +24,4 @@ const NotFoundPage = () => {
     )
 }
 
-export default NotFoundPage
+export default Nortification

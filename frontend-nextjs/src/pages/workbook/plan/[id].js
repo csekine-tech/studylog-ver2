@@ -6,37 +6,30 @@ import WorkbookList from '@/components/LeftBox/WorkbookList'
 import PlanRow from '@/components/Plan/Row'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import Modal from '@/components/Modal'
 import WorkbookEditModal from '@/components/GlobalModal/WorkbookEditModal'
 import WorkbookRegisterModal from '@/components/GlobalModal/WorkbookRegisterModal'
 import TaskBulkAddModal from '@/components/GlobalModal/TaskBulkAddModal'
+import { useWorkbook } from '@/hooks/workbook'
+
 const workbookDataDefault = {
     id: null,
     name: null,
-    hasChapter: false,
-    chapterCounts: null,
-    subjectName: null,
-    chapters: { id: 1, questionCounts: 0 },
+    has_chapter: false,
+    chapter_counts: null,
+    subject_name: null,
+    chapters: { number: 1, question_counts: 0 },
 }
 const WorkbookPlan = () => {
-    const workbookData = {
-        id: 1,
-        name: '大学への数学',
-        hasChapter: true,
-        chapterCounts: 3,
-        subjectName: '数学',
-        chapters: [
-            { number: 1, questionCounts: 10 },
-            { number: 2, questionCounts: 10 },
-            { number: 3, questionCounts: 10 },
-        ],
-    }
-
     const { user } = useAuth({ middleware: 'auth' })
     const router = useRouter()
-    const id = Number(router.query.id)
+    const [id, setId] = useState(Number(router.query.id))
+
+    const { getWorkbookDetail, getWorkbookList } = useWorkbook()
+    const [workbookData, setWorkbookData] = useState(workbookDataDefault)
+    const [workbookList, setWorkbookList] = useState([])
+
     const [isOpenBulkaddModal, setIsOpenBulkaddModal] = useState({
-        workbookId: null,
+        workbook_id: null,
         isOpen: false,
     })
 
@@ -62,8 +55,14 @@ const WorkbookPlan = () => {
     const openWorkbookRegisterModalHandler = () => {
         setIsOpenWorkbookRegisterModal({ isOpen: true })
     }
+    const getWorkbookListHandler = () => {
+        getWorkbookList({ setWorkbookList })
+    }
     useEffect(() => {
         return () => {
+            setId(Number(router.query.id))
+            setWorkbookData(workbookDataDefault)
+            setWorkbookList([])
             setIsOpenWorkbookRegisterModal({ isOpen: false })
             setIsOpenWorkbookEditModal({
                 id: null,
@@ -71,11 +70,19 @@ const WorkbookPlan = () => {
                 workbookData: workbookDataDefault,
             })
             setIsOpenBulkaddModal({
-                workbookId: null,
+                workbook_id: null,
                 isOpen: false,
             })
         }
     }, [])
+    useEffect(() => {
+        setId(Number(router.query.id))
+    }, [router])
+    useEffect(() => {
+        if (!Number.isNaN(id)) {
+            getWorkbookDetail({ id: id, setWorkbookData })
+        }
+    }, [id])
 
     return (
         <>
@@ -106,12 +113,16 @@ const WorkbookPlan = () => {
                                 </Link>
                             </div>
                             <div className="row py-3">
-                                <WorkbookList />
-                                <div className="col-md-9 pl-2">
+                                <WorkbookList
+                                    workbookList={workbookList}
+                                    getWorkbookList={getWorkbookListHandler}
+                                    className='d-none d-md-block'
+                                />
+                                <div className="col-md-9 pl-md-2">
                                     <div className="c-box mb-3">
                                         <div className="c-box__title__wrapper">
                                             <p className="c-box__title">
-                                                予定管理
+                                                予定表
                                             </p>
                                             {/* <p className="c-box__subtitle">
                                                 問題を解いたら、得点を4段階で評価しよう
@@ -119,106 +130,193 @@ const WorkbookPlan = () => {
                                         </div>
                                         <div className="c-box__inner">
                                             <div className="row">
-                                                <div className="col-2">
+                                                <div className="col-3 col-md-2">
                                                     <img
                                                         src="/img/img-dummy.png"
                                                         alt=""
                                                         className="w-100"
                                                     />
                                                 </div>
-                                                <div className="col-7 px-2 py-1">
+                                                <div className="col-9 col-md-7 px-2 py-1">
                                                     <Link
                                                         href={`/workbook/detail/${id}`}>
                                                         <p className="c-link u-text-18">
-                                                            大学への数学
+                                                            {workbookData?.name}
                                                         </p>
                                                     </Link>
                                                     <div className="row c-text u-text-14 pt-2">
-                                                        <p className="col-2">
+                                                        <p className="col-4 col-md-2">
                                                             全
                                                         </p>
-                                                        <p className="col-10">
-                                                            350問
+                                                        <p className="col-8 col-md-10">
+                                                            {
+                                                                workbookData?.question_counts
+                                                            }
+                                                            問
                                                         </p>
                                                     </div>
                                                     <div className="row c-text u-text-14 pt-1">
-                                                        <p className="col-2">
+                                                        <p className="col-4 col-md-2">
                                                             完了
                                                         </p>
-                                                        <p className="col-10">
-                                                            230問
+                                                        <p className="col-8 col-md-10">
+                                                            {
+                                                                workbookData?.finished_question_counts
+                                                            }
+                                                            問
                                                         </p>
                                                     </div>
                                                     <div className="row c-text u-text-14 pt-1">
-                                                        <p className="col-2">
+                                                        <p className="col-4 col-md-2">
                                                             未完了
                                                         </p>
-                                                        <p className="col-10">
-                                                            120問
+                                                        <p className="col-8 col-md-10">
+                                                            {workbookData?.question_counts
+                                                                ? workbookData.question_counts -
+                                                                  workbookData.finished_question_counts
+                                                                : ''}
+                                                            問
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p
-                                                className="c-link"
-                                                onClick={() => {
-                                                    openWorkbookEditModalHandler()
-                                                }}>
-                                                この教材の情報を編集する
-                                            </p>
-                                            <div className="py-2">
-                                                <button
-                                                    className="c-button--wide-white"
+                                            {workbookData.id && (
+                                                <p
+                                                    className="c-link"
                                                     onClick={() => {
-                                                        setIsOpenBulkaddModal({
-                                                            workbookId: 1,
-                                                            isOpen: true,
-                                                        })
+                                                        openWorkbookEditModalHandler()
                                                     }}>
-                                                    予定日をまとめて入力する
-                                                </button>
+                                                    この教材の情報を編集する
+                                                </p>
+                                            )}
+                                            {workbookData.id && (
+                                                <div className="py-2">
+                                                    <button
+                                                        className="c-button--wide-white"
+                                                        onClick={() => {
+                                                            setIsOpenBulkaddModal(
+                                                                {
+                                                                    workbook_id: 1,
+                                                                    isOpen: true,
+                                                                },
+                                                            )
+                                                        }}>
+                                                        予定日をまとめて入力する
+                                                    </button>
+                                                </div>
+                                            )}
+                                            <div style={{
+                                                        width: '100%',
+                                                        overflowX: 'scroll',
+                                                    }}>
+                                                <table
+                                                    className="c-table my-3"
+                                                    style={{
+                                                        minWidth: '450px',
+                                                        // overflowX: 'scroll',
+                                                    }}>
+                                                    <tbody>
+                                                        <tr>
+                                                            {workbookData?.has_chapter ===
+                                                                1 && (
+                                                                <th>章</th>
+                                                            )}
+                                                            <th>問題番号</th>
+                                                            <th>
+                                                                次に解く予定日
+                                                            </th>
+                                                            <th>解いた回数</th>
+                                                            <th>最後の評価</th>
+                                                        </tr>
+                                                        {workbookData.chapters
+                                                            .length > 0 &&
+                                                            workbookData.chapters.map(
+                                                                chapter => {
+                                                                    return chapter.questions.map(
+                                                                        (
+                                                                            question,
+                                                                            index,
+                                                                        ) => {
+                                                                            return (
+                                                                                <PlanRow
+                                                                                    is_finished={
+                                                                                        question.is_finished ===
+                                                                                        1
+                                                                                            ? true
+                                                                                            : false
+                                                                                    }
+                                                                                    number={
+                                                                                        question.number
+                                                                                    }
+                                                                                    planned_at={
+                                                                                        question.next_plan_date
+                                                                                            ? question.next_plan_date
+                                                                                            : ''
+                                                                                    }
+                                                                                    rate={
+                                                                                        question.last_rate
+                                                                                            ? question.last_rate
+                                                                                            : 0
+                                                                                    }
+                                                                                    counts={
+                                                                                        question.counts
+                                                                                    }
+                                                                                    edit={
+                                                                                        false
+                                                                                    }
+                                                                                    isDone={
+                                                                                        question.counts >
+                                                                                        0
+                                                                                            ? true
+                                                                                            : false
+                                                                                    }
+                                                                                    has_chapter={
+                                                                                        workbookData.has_chapter ===
+                                                                                        1
+                                                                                            ? true
+                                                                                            : false
+                                                                                    }
+                                                                                    chapter_number={
+                                                                                        workbookData.has_chapter ===
+                                                                                            1 &&
+                                                                                        question.number ===
+                                                                                            1
+                                                                                            ? chapter.number
+                                                                                            : ''
+                                                                                    }
+                                                                                    qId={
+                                                                                        question.id
+                                                                                    }
+                                                                                    taskId={
+                                                                                        question
+                                                                                            .tasks
+                                                                                            .length >
+                                                                                        0
+                                                                                            ? question
+                                                                                                  .tasks[0]
+                                                                                                  .id
+                                                                                            : ''
+                                                                                    }
+                                                                                    key={
+                                                                                        index
+                                                                                    }
+                                                                                    getTasks={() => {
+                                                                                        getWorkbookDetail(
+                                                                                            {
+                                                                                                id: id,
+                                                                                                setWorkbookData,
+                                                                                            },
+                                                                                        )
+                                                                                    }}
+                                                                                />
+                                                                            )
+                                                                        },
+                                                                    )
+                                                                },
+                                                            )}
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <table className="c-table my-3">
-                                                <tbody>
-                                                    <tr>
-                                                        <th>問題番号</th>
-                                                        <th>次に解く予定日</th>
-                                                        <th>解いた回数</th>
-                                                        <th>最後の評価</th>
-                                                    </tr>
-                                                    <PlanRow
-                                                        isFinished={true}
-                                                        number={1}
-                                                        rate={1}
-                                                        counts={3}
-                                                    />
-                                                    <PlanRow
-                                                        isFinished={false}
-                                                        number={2}
-                                                        rate={2}
-                                                        counts={2}
-                                                    />
-
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>
-                                                            <input
-                                                                type="date"
-                                                                name=""
-                                                                id=""
-                                                            />
-                                                        </td>
-                                                        <td>3</td>
-                                                        <td>
-                                                            <div className="c-star">
-                                                                <span className="selected">
-                                                                    ★★★★
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -227,10 +325,14 @@ const WorkbookPlan = () => {
                         {isOpenBulkaddModal && (
                             <TaskBulkAddModal
                                 isOpen={isOpenBulkaddModal.isOpen}
-                                workbookId={isOpenBulkaddModal.workbookId}
+                                workbook_id={id}
                                 closeHandler={() => {
+                                    getWorkbookDetail({
+                                        id: id,
+                                        setWorkbookData,
+                                    })
                                     setIsOpenBulkaddModal({
-                                        workbookId: null,
+                                        workbook_id: null,
                                         isOpen: false,
                                     })
                                 }}
@@ -240,9 +342,14 @@ const WorkbookPlan = () => {
                         {isOpenWorkbookEditModal.isOpen && (
                             <WorkbookEditModal
                                 isOpen={isOpenWorkbookEditModal.isOpen}
-                                id={1}
+                                id={id}
                                 workbookData={workbookData}
                                 closeHandler={() => {
+                                    getWorkbookListHandler()
+                                    getWorkbookDetail({
+                                        id: id,
+                                        setWorkbookData,
+                                    })
                                     setIsOpenWorkbookEditModal({
                                         id: null,
                                         isOpen: false,
@@ -254,6 +361,7 @@ const WorkbookPlan = () => {
                             <WorkbookRegisterModal
                                 isOpen={isOpenWorkbookregisterModal.isOpen}
                                 closeHandler={() => {
+                                    getWorkbookListHandler()
                                     setIsOpenWorkbookRegisterModal({
                                         isOpen: false,
                                     })

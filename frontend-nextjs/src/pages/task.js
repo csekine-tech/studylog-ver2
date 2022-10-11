@@ -1,24 +1,30 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/auth'
-import GuestHeader from '@/components/Header/GuestHeader'
 import AuthHeader from '@/components/Header/AuthHeader'
-import WorkbookList from '@/components/LeftBox/WorkbookList'
-import TaskCard from '@/components/TaskCard/default'
+import TaskCard from '@/components/TaskCard/defaultThree'
 import TaskEditModal from '@/components/GlobalModal/TaskEditModal'
 import TaskRegisterModal from '@/components/GlobalModal/TaskRegisterModal'
 import WorkbookRegisterModal from '@/components/GlobalModal/WorkbookRegisterModal'
+import { useTask } from '@/hooks/task'
+import { useWorkbook } from '@/hooks/workbook'
+import dateFormatText from '@/functions/date-format-text'
 
 export default function MyPage() {
     const { user } = useAuth({ middleware: 'auth' })
+
+    const { getTaskList } = useTask()
+    const [taskList, setTaskList] = useState([])
+    const { getWorkbookList } = useWorkbook()
+    const [workbookList, setWorkbookList] = useState([])
     const [isOpenTaskEditModal, setIsOpenTaskEditModal] = useState({
-        id: null,
+        task: {},
         isOpen: false,
-        date: null,
     })
     const [isOpenTaskRegisterModal, setIsOpenTaskRegisterModal] = useState({
+        workbook_id: null,
         isOpen: false,
+        workbookData: {},
     })
     const [
         isOpenWorkbookregisterModal,
@@ -26,19 +32,33 @@ export default function MyPage() {
     ] = useState({
         isOpen: false,
     })
-    const openTaskEditModalHandler = ({ id, date }) => {
-        setIsOpenTaskEditModal({ id: id, isOpen: true, date: date })
+    const openTaskEditModalHandler = task => {
+        setIsOpenTaskEditModal({
+            task: task,
+            isOpen: true,
+        })
     }
     const openTaskRegisterModalHandler = () => {
-        setIsOpenTaskRegisterModal({ isOpen: true })
+        setIsOpenTaskRegisterModal({
+            isOpen: true,
+        })
     }
-    const openWorkbookRegisterModalHandler = () => {
-        setIsOpenWorkbookRegisterModal({ isOpen: true })
+
+    const getWorkbookListHandler = () => {
+        getWorkbookList({ setWorkbookList })
     }
     useEffect(() => {
+        getTaskList({ setTaskList })
+        getWorkbookList({ setWorkbookList })
         return () => {
-            setIsOpenTaskEditModal({ id: null, isOpen: false, date: null })
-            setIsOpenTaskRegisterModal({ isOpen: false })
+            setTaskList([])
+            setWorkbookList([])
+            setIsOpenTaskEditModal({ task: {}, isOpen: false })
+            setIsOpenTaskRegisterModal({
+                workbook_id: null,
+                isOpen: false,
+                workbookData: {},
+            })
             setIsOpenWorkbookRegisterModal({ isOpen: false })
         }
     }, [])
@@ -54,59 +74,131 @@ export default function MyPage() {
                     <main>
                         <div className="c-container">
                             <div className="row">
-                                <div className="col-md-4 pr-md-2 py-1">
-                                    <div
-                                        className="c-button"
-                                        onClick={() => {
-                                            openWorkbookRegisterModalHandler()
-                                        }}>
-                                        教材を登録する
+                                {workbookList.length > 0 && (
+                                    <div className="col-md-4 py-1">
+                                        <button
+                                            className="c-button w-100"
+                                            onClick={() => {
+                                                openTaskRegisterModalHandler()
+                                            }}>
+                                            個別にタスクを作成する
+                                        </button>
                                     </div>
-                                </div>
-                                <div className="col-md-4 px-md-2 py-1">
-                                    <button
-                                        className="c-button w-100"
-                                        onClick={() => {
-                                            openTaskRegisterModalHandler()
-                                        }}>
-                                        個別に学習を記録する
-                                    </button>
-                                </div>
+                                )}
                             </div>
                             <div className="row py-3">
-                                <WorkbookList />
-                                <div className="col-md-9 pl-md-2 mb-2">
+                                {/* <WorkbookList
+                                    workbookList={workbookList}
+                                    getWorkbookList={getWorkbookListHandler}
+                                /> */}
+                                <div className="col-md-12 mb-2">
                                     <div className="c-box mb-3">
                                         <div className="c-box__title__wrapper">
                                             <p className="c-box__title">
-                                                今日のタスク
+                                                タスク一覧
                                             </p>
                                             <p className="c-box__subtitle">
                                                 問題を解いたら、得点を4段階で評価しよう
                                             </p>
                                         </div>
                                         <div className="c-box__inner">
-                                            <p className="c-title">昨日</p>
-                                            <div className="row">
-                                                <TaskCard
-                                                    color="blue"
-                                                    title="大学への数学"
-                                                    id={1}
-                                                    chapter={1}
-                                                    number={2}
-                                                    rate={0}
-                                                    date="2022-09-01"
-                                                    openModalHandler={() => {
-                                                        openTaskEditModalHandler(
-                                                            {
-                                                                id: 1,
-                                                                date:
-                                                                    '2022-09-01',
-                                                            },
+                                            {Object.keys(taskList).map(
+                                                index => {
+                                                    let taskrow =
+                                                        taskList[index]
+                                                    let donecount = 0
+                                                    let inner = taskrow.map(
+                                                        task => {
+                                                            if (!task.done_at) {
+                                                                donecount++
+                                                                return (
+                                                                    <TaskCard
+                                                                        key={
+                                                                            task.id
+                                                                        }
+                                                                        color={
+                                                                            task
+                                                                                .question
+                                                                                .chapter
+                                                                                .workbook
+                                                                                .subject
+                                                                                .color_name
+                                                                        }
+                                                                        title={
+                                                                            task.workbook_name
+                                                                        }
+                                                                        id={
+                                                                            task.id
+                                                                        }
+                                                                        chapter={
+                                                                            task
+                                                                                .question
+                                                                                .chapter
+                                                                                .number
+                                                                        }
+                                                                        number={
+                                                                            task
+                                                                                .question
+                                                                                .number
+                                                                        }
+                                                                        has_chapter={
+                                                                            task
+                                                                                .question
+                                                                                .chapter
+                                                                                .workbook
+                                                                                .has_chapter
+                                                                        }
+                                                                        rate={0}
+                                                                        date={
+                                                                            task.planned_at
+                                                                        }
+                                                                        openModalHandler={() => {
+                                                                            openTaskEditModalHandler(
+                                                                                task,
+                                                                            )
+                                                                        }}
+                                                                        reload={() => {
+                                                                            getTaskList(
+                                                                                {
+                                                                                    setTaskList,
+                                                                                },
+                                                                            )
+                                                                        }}
+                                                                        workbook_id={
+                                                                            task
+                                                                                .question
+                                                                                .chapter
+                                                                                .workbook
+                                                                                .id
+                                                                        }
+                                                                    />
+                                                                )
+                                                            }
+                                                        },
+                                                    )
+                                                    if (donecount > 0) {
+                                                        return (
+                                                            <div key={index}>
+                                                                <p className="c-title">
+                                                                    {dateFormatText(
+                                                                        index,
+                                                                    )}
+                                                                </p>
+                                                                <div className="row">
+                                                                    {inner}
+                                                                </div>
+                                                            </div>
                                                         )
-                                                    }}
-                                                />
-                                            </div>
+                                                    } else {
+                                                        return
+                                                    }
+                                                },
+                                            )}
+                                            {taskList.length === 0 && (
+                                                <p className="c-text">
+                                                    タスクは登録されていません
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -114,32 +206,36 @@ export default function MyPage() {
                         </div>
                         {isOpenTaskEditModal.isOpen && (
                             <TaskEditModal
-                                id={isOpenTaskEditModal.id}
                                 isOpen={isOpenTaskEditModal.isOpen}
                                 closeHandler={() => {
+                                    getTaskList({ setTaskList })
                                     setIsOpenTaskEditModal({
-                                        id: null,
+                                        task: {},
                                         isOpen: false,
-                                        date: null,
                                     })
                                 }}
-                                date={isOpenTaskEditModal.date}
+                                task={isOpenTaskEditModal.task}
                             />
                         )}
                         {isOpenTaskRegisterModal.isOpen && (
                             <TaskRegisterModal
                                 isOpen={isOpenTaskRegisterModal.isOpen}
                                 closeHandler={() => {
+                                    getTaskList({ setTaskList })
                                     setIsOpenTaskRegisterModal({
+                                        workbook_id: null,
                                         isOpen: false,
+                                        workbookData: {},
                                     })
                                 }}
+                                workbookList={workbookList}
                             />
                         )}
                         {isOpenWorkbookregisterModal.isOpen && (
                             <WorkbookRegisterModal
                                 isOpen={isOpenWorkbookregisterModal.isOpen}
                                 closeHandler={() => {
+                                    getWorkbookListHandler()
                                     setIsOpenWorkbookRegisterModal({
                                         isOpen: false,
                                     })

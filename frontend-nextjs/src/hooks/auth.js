@@ -2,6 +2,8 @@ import useSWR from 'swr'
 import axios from '@/lib/axios'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { useSubject } from './subject'
+import { SubjectContext } from '@/store/subject-context'
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
@@ -10,26 +12,44 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         axios
             .get('/api/user')
             .then(res => res.data)
+            .then(getSubjectList())
             .catch(error => {
                 if (error.response.status !== 409) throw error
 
                 router.push('/verify-email')
             }),
     )
+    const { getSubjectList } = useSubject()
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
-    const register = async ({ setErrors, ...props }) => {
+    const register = async ({ setErrors, setStatus, ...props }) => {
         await csrf()
 
         setErrors([])
+        setStatus(null)
 
         axios
             .post('/register', props)
-            .then(() => mutate())
+            .then(response => setStatus(response.data.status))
             .catch(error => {
                 if (error.response.status !== 422) throw error
 
+                setErrors(error.response.data.errors)
+            })
+    }
+
+    const update = async ({ setErrors, setStatus, ...props }) => {
+        await csrf()
+
+        setErrors([])
+        setStatus(null)
+
+        axios
+            .post('/update', props)
+            .then(response => setStatus(response.data.status))
+            .catch(error => {
+                if (error.response.status !== 422) throw error
                 setErrors(error.response.data.errors)
             })
     }
@@ -125,6 +145,17 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
                 setErrors(error.response.data.errors)
             })
     }
+    const remove = async () => {
+        await csrf()
+        axios
+            .get('/remove')
+            .then(() => mutate())
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+
+                setErrors(error.response.data.errors)
+            })
+    }
 
     useEffect(() => {
         if (middleware === 'guest' && redirectIfAuthenticated && user)
@@ -140,11 +171,13 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     return {
         user,
         register,
+        update,
         login,
         forgotPassword,
         resetPassword,
         resendEmailVerification,
         logout,
+        remove,
         googleLogin,
         googleCallback,
     }

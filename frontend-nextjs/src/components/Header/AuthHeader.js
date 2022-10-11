@@ -1,9 +1,19 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/auth'
+import { useRouter } from 'next/router'
+import AuthMobileHeader from './AuthMobileHeader'
+
 const AuthHeader = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false)
     const { logout } = useAuth()
+    const route = useRouter().route
+
+    useEffect(() => {
+        return () => {
+            setIsPopupOpen(false)
+        }
+    }, [])
 
     return (
         <header className="l-header sticky-top">
@@ -18,7 +28,7 @@ const AuthHeader = () => {
                     </Link>
                     <div className="l-header__menu__wrapper">
                         <ul className="l-header__menu">
-                            <Link href="/config">
+                            {/* <Link href="/config">
                                 <li className="l-header__menu__item">
                                     <a
                                         href=""
@@ -26,8 +36,8 @@ const AuthHeader = () => {
                                         <i className="fas fa-cog"></i>
                                     </a>
                                 </li>
-                            </Link>
-                            <Link href="/nortification">
+                            </Link> */}
+                            {/* <Link href="/nortification">
                                 <li className="l-header__menu__item">
                                     <a
                                         href=""
@@ -35,7 +45,7 @@ const AuthHeader = () => {
                                         <i className="fas fa-bell"></i>
                                     </a>
                                 </li>
-                            </Link>
+                            </Link> */}
                             <li
                                 className="l-header__menu__item"
                                 onMouseEnter={() => {
@@ -44,7 +54,9 @@ const AuthHeader = () => {
                                 onMouseLeave={() => {
                                     setIsPopupOpen(false)
                                 }}>
-                                <div href="" className="l-header__menu__item__link">
+                                <div
+                                    href=""
+                                    className="l-header__menu__item__link">
                                     <i className="fas fa-user-circle"></i>
                                 </div>
                                 {isPopupOpen && (
@@ -77,33 +89,46 @@ const AuthHeader = () => {
                             </li>
                         </ul>
                     </div>
+                    <AuthMobileHeader />
                 </div>
                 <div className="l-header--sub">
                     <div className="l-header--sub__menu__wrapper">
                         <ul className="l-header--sub__menu">
                             <Link href="/mypage">
-                                <li className="l-header--sub__menu__item">
+                                <li
+                                    className={`l-header--sub__menu__item ${
+                                        route === '/mypage' ? 'current' : ''
+                                    }`}>
                                     <a className="l-header--sub__menu__item__link">
                                         ホーム
                                     </a>
                                 </li>
                             </Link>
                             <Link href="/workbook">
-                                <li className="l-header--sub__menu__item">
+                                <li
+                                    className={`l-header--sub__menu__item ${
+                                        route === '/workbook' ? 'current' : ''
+                                    }`}>
                                     <a className="l-header--sub__menu__item__link">
                                         本棚
                                     </a>
                                 </li>
                             </Link>
                             <Link href="/task">
-                                <li className="l-header--sub__menu__item">
+                                <li
+                                    className={`l-header--sub__menu__item ${
+                                        route === '/task' ? 'current' : ''
+                                    }`}>
                                     <a className="l-header--sub__menu__item__link">
                                         タスク
                                     </a>
                                 </li>
                             </Link>
                             <Link href="/calendar">
-                                <li className="l-header--sub__menu__item">
+                                <li
+                                    className={`l-header--sub__menu__item ${
+                                        route === '/calendar' ? 'current' : ''
+                                    }`}>
                                     <a className="l-header--sub__menu__item__link">
                                         カレンダー
                                     </a>

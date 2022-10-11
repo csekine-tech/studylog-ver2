@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import GuestHeader from '@/components/Header/GuestHeader'
+import Loading from '@/components/Loading'
 
 const Login = () => {
     const router = useRouter()
@@ -18,6 +19,7 @@ const Login = () => {
     const [shouldRemember, setShouldRemember] = useState(false)
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         if (router.query.reset?.length > 0 && errors.length === 0) {
@@ -25,9 +27,13 @@ const Login = () => {
         } else {
             setStatus(null)
         }
+        return () => {
+            setLoading(false)
+        }
     })
 
     const submitForm = async event => {
+        setLoading(true)
         event.preventDefault()
 
         login({
@@ -38,6 +44,25 @@ const Login = () => {
             setStatus,
         })
     }
+
+    useEffect(() => {
+        if (errors.length > 0) {
+            setLoading(false)
+        } else if (status) {
+            setLoading(false)
+        }
+    }, [status, errors])
+
+    useEffect(() => {
+        return () => {
+            setEmail('')
+            setPassword('')
+            setShouldRemember(false)
+            setStatus(null)
+            setErrors([])
+            setLoading(false)
+        }
+    }, [])
 
     return (
         <>
@@ -74,7 +99,9 @@ const Login = () => {
                                 <InputError messages={errors.email} />
                             </div>
                             <div className="mb-2">
-                                <p className="c-text u-text--white">パスワード</p>
+                                <p className="c-text u-text--white">
+                                    パスワード
+                                </p>
                                 <input
                                     onChange={event =>
                                         setPassword(event.target.value)
@@ -102,13 +129,15 @@ const Login = () => {
                                             )
                                         }
                                     />
-                                    ログイン情報を記録する
+                                    ログイン情報を記憶する
                                 </label>
                             </div>
 
                             <div className="mb-1">
-                                <button className="c-button--wide" type="submit">
-                                    ログインする
+                                <button
+                                    className="c-button--wide"
+                                    type="submit">
+                                    {loading ? <Loading /> : 'ログインする'}
                                 </button>
                             </div>
                             <div className="">
@@ -117,7 +146,7 @@ const Login = () => {
                                     onClick={() => {
                                         googleLogin()
                                     }}>
-                                    Googleでログインする
+                                    Googleアカウントでログインする
                                 </div>
                             </div>
                             <p className="c-text text-center u-text--white mb-2">

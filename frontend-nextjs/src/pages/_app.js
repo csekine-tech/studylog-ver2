@@ -1,9 +1,19 @@
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fullcalendar/common/main.css' // @fullcalendar/react imports @fullcalendar/common
 import '@fullcalendar/daygrid/main.css' // @fullcalendar/timegrid imports @fullcalendar/daygrid
-// import '@fullcalendar/timegrid/main.css' // @fullcalendar/timegrid is a direct import
 import './../scss/style.scss'
+import { SubjectProvider } from '@/store/subject-context'
+import { ToastProvider } from '@/hooks/toast'
 
-const App = ({ Component, pageProps }) => <Component {...pageProps} />
+const App = ({ Component, pageProps }) => {
+    return (
+        <div id="app">
+            <SubjectProvider>
+                <ToastProvider>
+                    <Component {...pageProps} />
+                </ToastProvider>
+            </SubjectProvider>
+        </div>
+    )
+}
 
 export default App

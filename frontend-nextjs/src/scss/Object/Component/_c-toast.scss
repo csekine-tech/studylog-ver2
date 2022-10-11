@@ -1,0 +1,55 @@
+.c-toast {
+    display: block;
+    padding: 15px 30px;
+    border-radius: 10px 10px;
+    background-color: white;
+    animation-duration: 2s;
+    animation-delay: 1s;
+    animation-name: fadein;
+    animation-fill-mode: forwards;
+    box-shadow: 5px 5px 50px rgb(176, 176, 176);
+    margin: 10px;
+    position: relative;
+    width: 300px;
+    @include md{
+        width: 100%;
+        padding: 15px;
+    }
+
+    &__wrapper {
+        position: fixed;
+        right: 0;
+        z-index: 5555;
+        top: 0px;
+        margin: 30px;
+        @include md{
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 80px;
+            top:80px;
+            width: 80%;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        background-color: map-get($colors, s-gray);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        top: -5px;
+        right: -5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & .fa-times {
+            color: white;
+
+        }
+    }
+    &.hidden{
+        transition: 2s;
+        opacity: 0;
+    }
+}

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\EditUserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -17,12 +19,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        $tmp=$request;
+        $tmp = $request;
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return ['req'=>$tmp];
+        return ['req' => $tmp];
+    }
+
+    public function update(EditUserRequest $request)
+    {
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password =  Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'update user successfully!'
+        ]);
     }
 
     /**

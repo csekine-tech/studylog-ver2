@@ -1,6 +1,7 @@
 .c-text {
     color: $black;
-    @include font(14)
+    @include font(14);
+    overflow-wrap: break-word;
 }
 
 .c-link {
@@ -8,6 +9,7 @@
     text-decoration: underline;
     color: $link;
     cursor: pointer;
+    word-wrap: break-word;
 
     &:hover {
         opacity: 0.8;
@@ -60,6 +62,10 @@
     margin-top: 10rem;
     padding-top: 15rem;
     padding-bottom: 15rem;
+
+    @include md {
+        height: calc(100vh - 50px);
+    }
 }
 
 .c-guest-hero {
@@ -69,14 +75,19 @@
     min-height: 500px;
     margin-left: -10rem;
 
+    @include md {
+        margin-left: 0;
+    }
+
 
     img {
         position: absolute;
-        top: 40%;
+        top: 48%;
         left: 0;
 
         @include md {
             width: 100%;
+            top: 50%;
             transform: translateY(-50%);
 
         }
@@ -85,25 +96,42 @@
 
 .c-guest__inner {
     position: relative;
-    // top: 55%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
     margin: 0 auto;
-    // padding-top: 15rem;
-    // padding-bottom: 15rem;
     width: 50rem;
-    // height: auto;
     min-height: 500px;
 
     @include md {
         width: 100%;
         position: relative;
-        top: 180px;
         left: 0;
         transform: none;
+
     }
 
 }
-.c-border-none{
+
+.c-border-none {
     border: none;
+}
+
+//calendar
+.done {
+    .fc-event-main {
+        .fc-event-title {
+            text-decoration: line-through;
+
+        }
+    }
+}
+.c-loading{
+    justify-content: center;
+    align-items: center;
+    div{
+        display: block;
+        height: auto!important;
+        width: 1.76rem!important;
+        svg{
+            height: 100%!important;
+        }
+    }
 }

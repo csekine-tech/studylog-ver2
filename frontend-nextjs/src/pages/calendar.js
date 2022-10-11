@@ -1,18 +1,25 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/auth'
-import GuestHeader from '@/components/Header/GuestHeader'
 import AuthHeader from '@/components/Header/AuthHeader'
 import TaskCardMini from '@/components/TaskCard/mini'
 import TaskEditModal from '@/components/GlobalModal/TaskEditModal'
 import WorkbookRegisterModal from '@/components/GlobalModal/WorkbookRegisterModal'
 import TaskRegisterModal from '@/components/GlobalModal/TaskRegisterModal'
-import TaskSetRateModal from '@/components/GlobalModal/TasksetRateModal'
+import TaskSetRateModal from '@/components/GlobalModal/TaskSetRateModal'
 import Calendar from '@/components/Calendar'
+import { useTask } from '@/hooks/task'
+import { useWorkbook } from '@/hooks/workbook'
 
 export default function MyPage() {
     const { user } = useAuth({ middleware: 'auth' })
+
+    const { getTaskList, getTodaysTaskList } = useTask()
+
+    const [todaysTaskList, setTodaysTaskList] = useState([])
+    const { getWorkbookList } = useWorkbook()
+    const [workbookList, setWorkbookList] = useState([])
+    const [taskList, setTaskList] = useState([])
 
     const [isOpenTaskEditModal, setIsOpenTaskEditModal] = useState({
         id: null,
@@ -20,11 +27,11 @@ export default function MyPage() {
     })
     const [isOpenTaskRegisterModal, setIsOpenTaskRegisterModal] = useState({
         isOpen: false,
-        date: null,
+        date: '',
     })
     const [isOpenTaskSetRateModal, setIsOpenTaskSetRateModal] = useState({
         isOpen: false,
-        id: null,
+        task: {},
     })
     const [
         isOpenWorkbookregisterModal,
@@ -32,23 +39,28 @@ export default function MyPage() {
     ] = useState({
         isOpen: false,
     })
-    const openTaskEditModalHandler = id => {
-        setIsOpenTaskEditModal({ id: id, isOpen: true })
+    const openTaskEditModalHandler = task => {
+        setIsOpenTaskEditModal({ task: task, isOpen: true })
     }
     const openTaskRegisterModalHandler = dateStr => {
         setIsOpenTaskRegisterModal({ isOpen: true, date: dateStr })
     }
-    const openTaskSetRateModalHandler = task_id => {
-        setIsOpenTaskSetRateModal({ isOpen: true, id: task_id })
+    const openTaskSetRateModalHandler = task => {
+        setIsOpenTaskSetRateModal({ isOpen: true, task: task })
     }
-    const openWorkbookRegisterModalHandler = () => {
-        setIsOpenWorkbookRegisterModal({ isOpen: true })
-    }
+
     useEffect(() => {
+        getTodaysTaskList({ setTodaysTaskList })
+        getTaskList({ setTaskList })
+        getWorkbookList({ setWorkbookList })
+
         return () => {
-            setIsOpenTaskEditModal({ id: null, isOpen: false })
-            setIsOpenTaskRegisterModal({ isOpen: false, date: null })
-            setIsOpenTaskSetRateModal({ isOpen: false, id: null })
+            setTodaysTaskList([])
+            setTaskList([])
+            setWorkbookList([])
+            setIsOpenTaskEditModal({ task: {}, isOpen: false })
+            setIsOpenTaskRegisterModal({ isOpen: false, date: '' })
+            setIsOpenTaskSetRateModal({ isOpen: false, task: {} })
             setIsOpenWorkbookRegisterModal({ isOpen: false })
         }
     }, [])
@@ -61,28 +73,11 @@ export default function MyPage() {
             {user && (
                 <>
                     <AuthHeader />
+
                     <main>
                         <div className="c-container">
-                            <div className="row">
-                                <div className="col-md-4 pr-md-2 py-1">
-                                    <div
-                                        className="c-button"
-                                        onClick={() => {
-                                            openWorkbookRegisterModalHandler()
-                                        }}>
-                                        教材を登録する
-                                    </div>
-                                </div>
-                                <Link href="/task">
-                                    <div className="col-md-4 px-md-2 py-1">
-                                        <div className="c-button">
-                                            学習を記録する
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
                             <div className="row py-3">
-                                <div className="col-md-3 pr-md-2 mb-2">
+                                <div className="col-md-3 pr-md-2 mb-2 d-none d-md-block">
                                     <div className="c-box">
                                         <div className="c-box__title__wrapper">
                                             <p className="c-box__title">
@@ -90,17 +85,61 @@ export default function MyPage() {
                                             </p>
                                         </div>
                                         <div className="c-box__inner">
-                                            <TaskCardMini
-                                                color="blue"
-                                                title="大学への数学"
-                                                id={1}
-                                                chapter="1"
-                                                number="2"
-                                                rate={0}
-                                                openModalHandler={() => {
-                                                    openTaskEditModalHandler(1)
-                                                }}
-                                            />
+                                            {todaysTaskList?.map(task => {
+                                                return (
+                                                    <TaskCardMini
+                                                        key={task.id}
+                                                        color={
+                                                            task.question
+                                                                .chapter
+                                                                .workbook
+                                                                .subject
+                                                                .color_name
+                                                        }
+                                                        title={
+                                                            task.workbook_name
+                                                        }
+                                                        id={task.id}
+                                                        chapter={
+                                                            task.question
+                                                                .chapter.number
+                                                        }
+                                                        number={
+                                                            task.question.number
+                                                        }
+                                                        rate={0}
+                                                        has_chapter={
+                                                            task.question
+                                                                .chapter
+                                                                .workbook
+                                                                .has_chapter
+                                                        }
+                                                        openModalHandler={() => {
+                                                            openTaskEditModalHandler(
+                                                                task,
+                                                            )
+                                                        }}
+                                                        reload={() => {
+                                                            getTaskList({
+                                                                setTaskList,
+                                                            })
+                                                            getTodaysTaskList({
+                                                                setTodaysTaskList,
+                                                            })
+                                                        }}
+                                                        workbook_id={
+                                                            task.question
+                                                                .chapter
+                                                                .workbook.id
+                                                        }
+                                                    />
+                                                )
+                                            })}
+                                            {todaysTaskList.length === 0 && (
+                                                <p className="c-text">
+                                                    今日のタスクはありません。
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -113,15 +152,23 @@ export default function MyPage() {
                                         </div>
                                         <div className="c-box__inner">
                                             <Calendar
-                                                openTaskSetRateModalOpenHandler={task_id => {
+                                                openTaskSetRateModalOpenHandler={task => {
                                                     openTaskSetRateModalHandler(
-                                                        task_id,
+                                                        task,
                                                     )
                                                 }}
                                                 openTaskRegisterModalOpenHandler={dateStr => {
-                                                    openTaskRegisterModalHandler(
-                                                        dateStr,
-                                                    )
+                                                    if (
+                                                        workbookList.length > 0
+                                                    ) {
+                                                        openTaskRegisterModalHandler(
+                                                            dateStr,
+                                                        )
+                                                    }
+                                                }}
+                                                taskList={taskList}
+                                                getTaskList={() => {
+                                                    getTaskList({ setTaskList })
                                                 }}
                                             />
                                         </div>
@@ -134,39 +181,48 @@ export default function MyPage() {
                                 id={isOpenTaskEditModal.id}
                                 isOpen={isOpenTaskEditModal.isOpen}
                                 closeHandler={() => {
+                                    getTodaysTaskList({ setTodaysTaskList })
+                                    getTaskList({ setTaskList })
                                     setIsOpenTaskEditModal({
-                                        id: null,
+                                        task: {},
                                         isOpen: false,
                                     })
                                 }}
+                                task={isOpenTaskEditModal.task}
                             />
                         )}
                         {isOpenTaskRegisterModal.isOpen && (
                             <TaskRegisterModal
                                 isOpen={isOpenTaskRegisterModal.isOpen}
                                 closeHandler={() => {
+                                    getTaskList({ setTaskList })
+                                    getTodaysTaskList({ setTodaysTaskList })
                                     setIsOpenTaskRegisterModal({
                                         isOpen: false,
                                     })
                                 }}
                                 date={isOpenTaskRegisterModal.date}
+                                workbookList={workbookList}
                             />
                         )}
                         {isOpenTaskSetRateModal.isOpen && (
                             <TaskSetRateModal
                                 isOpen={isOpenTaskSetRateModal.isOpen}
                                 closeHandler={() => {
+                                    getTaskList({ setTaskList })
+                                    getTodaysTaskList({ setTodaysTaskList })
                                     setIsOpenTaskSetRateModal({
                                         isOpen: false,
                                     })
                                 }}
-                                id={isOpenTaskSetRateModal.id}
+                                task={isOpenTaskSetRateModal.task}
                             />
                         )}
                         {isOpenWorkbookregisterModal.isOpen && (
                             <WorkbookRegisterModal
                                 isOpen={isOpenWorkbookregisterModal.isOpen}
                                 closeHandler={() => {
+                                    getWorkbookList({ setWorkbookList })
                                     setIsOpenWorkbookRegisterModal({
                                         isOpen: false,
                                     })

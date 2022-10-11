@@ -1,13 +1,7 @@
-// import ApplicationLogo from '@/components/ApplicationLogo'
-import AuthCard from '@/components/AuthCard'
-import Button from '@/components/Button'
-import GuestLayout from '@/components/Layouts/GuestLayout'
-import Input from '@/components/Input'
 import InputError from '@/components/InputError'
-import Label from '@/components/Label'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import GuestHeader from '@/components/Header/GuestHeader'
 
 const Register = () => {
@@ -20,25 +14,47 @@ const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const [status, setStatus] = useState(null)
     const [errors, setErrors] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const submitForm = event => {
+        setLoading(true)
         event.preventDefault()
-
         register({
             name,
             email,
             password,
             password_confirmation: passwordConfirmation,
             setErrors,
+            setStatus,
         })
     }
+
+    useEffect(() => {
+        if (errors.length > 0) {
+            setLoading(false)
+        } else if (status) {
+            setLoading(false)
+        }
+    }, [status, errors])
+
+    useEffect(() => {
+        return () => {
+            setName('')
+            setEmail('')
+            setPassword('')
+            setPasswordConfirmation('')
+            setErrors([])
+            setStatus(null)
+        }
+    }, [])
 
     return (
         <>
             <GuestHeader />
             <div className="c-guest-bg">
-                {/* <div className="c-container"> */}
+                <div className="c-container">
                     <div className="c-guest__inner">
                         <h3 className="u-text--white u-text-24 mb-3 text-center">
                             新規会員登録
@@ -54,7 +70,9 @@ const Register = () => {
                         </p>
                         <form onSubmit={submitForm}>
                             <div className="mb-2">
-                                <p className="c-text u-text--white">ユーザー名</p>
+                                <p className="c-text u-text--white">
+                                    ユーザー名
+                                </p>
                                 <input
                                     type="text"
                                     name="name"
@@ -82,7 +100,9 @@ const Register = () => {
                                 <InputError messages={errors.email} />
                             </div>
                             <div className="mb-2">
-                                <p className="c-text u-text--white">パスワード</p>
+                                <p className="c-text u-text--white">
+                                    パスワード
+                                </p>
                                 <input
                                     type="password"
                                     name="pasword"
@@ -117,7 +137,9 @@ const Register = () => {
                             </div>
 
                             <div className="mb-1">
-                                <button className="c-button--wide" type="submit">
+                                <button
+                                    className="c-button--wide"
+                                    type="submit">
                                     新規会員登録する
                                 </button>
                             </div>
@@ -127,12 +149,12 @@ const Register = () => {
                                     onClick={() => {
                                         googleLogin()
                                     }}>
-                                    Googleでログインする
+                                    Googleアカウントで登録する
                                 </div>
                             </div>
                         </form>
                     </div>
-                {/* </div> */}
+                </div>
             </div>
         </>
     )

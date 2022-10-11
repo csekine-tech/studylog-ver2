@@ -85,13 +85,6 @@
         position: relative;
         display: block;
 
-        &:hover {
-          // color: $m-blue;
-        }
-
-        &.active {
-          // color: $m-blue;
-        }
 
         &:last-of-type {
           margin-right: 0;
@@ -133,6 +126,7 @@
           z-index: 9999999;
           filter: drop-shadow(5px 5px 10px rgba($black, 0.1));
           transition: 0.2s;
+          cursor: pointer;
 
           &__wrapper {
             z-index: 999999;
