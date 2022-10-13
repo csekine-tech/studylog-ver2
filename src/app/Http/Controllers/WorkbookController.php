@@ -13,6 +13,7 @@ use App\Models\Task;
 use App\Http\Requests\WorkbookRequest;
 use App\Http\Requests\WorkbookImageRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -67,25 +68,26 @@ class WorkbookController extends Controller
     {
         $workbook = Workbook::find($request->id);
         if (!is_null($workbook) && $request->hasFile('image')) {
-            //local
+		//local
+		$image=$request->file('image');
             if (app()->isLocal() || app()->runningUnitTests()) {
-                $path = ltrim($request->file('image')->store('public/workbook_images/'. $request->user()->id), 'public/');
+                $path = ltrim($image->store('public/workbook_images/'. $request->user()->id), 'public/');
             } else {
                 //production
                 //storeメソッド引数　1フォルダ（詳しくはパス名）2ディスク名
-                $path = $request->file('image')->store(
-                    'workbook_images/' . $request->user()->id,
+                $path = $image->store(
+			'workbook_images/' . Auth::user()->id,
                     's3'
-                );
-            }
+		    );
+	    }
+
             $workbook->image_url = $path;
         }
         $workbook->save();
 
         return response()->json([
-            'status' => 200,
-            'request' => $request,
-            'path' => $path,
+		'status' => 200,
+		'file'=>$path,
             'message' => 'store workbook successfully!'
         ]);
     }
