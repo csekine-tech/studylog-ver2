@@ -14,11 +14,6 @@ use App\Http\Requests\WorkbookRequest;
 use App\Http\Requests\WorkbookImageRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Storage;
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
-
 
 class WorkbookController extends Controller
 {
