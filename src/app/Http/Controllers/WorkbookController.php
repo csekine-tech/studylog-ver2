@@ -14,7 +14,10 @@ use App\Http\Requests\WorkbookRequest;
 use App\Http\Requests\WorkbookImageRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Storage;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 
 
 class WorkbookController extends Controller
@@ -86,8 +89,7 @@ class WorkbookController extends Controller
         $workbook->save();
 
         return response()->json([
-		'status' => 200,
-		'file'=>$path,
+            'status' => 200,
             'message' => 'store workbook successfully!'
         ]);
     }
