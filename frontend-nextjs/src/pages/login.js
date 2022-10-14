@@ -21,15 +21,6 @@ const Login = () => {
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [statusMessage, setStatusMessage] = useState(null)
-
-    useEffect(() => {
-        if (router.query.reset?.length > 0 && errors.length === 0) {
-            setStatusMessage(decodeURIComponent(atob(router.query.reset)))
-        } else {
-            setStatusMessage(null)
-        }
-    })
 
     const submitForm = async event => {
         setIsLoading(true)
@@ -51,7 +42,6 @@ const Login = () => {
             setPassword('')
             setShouldRemember(false)
             setStatus(null)
-            setStatusMessage(null)
             setErrors({})
             setIsLoading(false)
         }
@@ -77,10 +67,15 @@ const Login = () => {
                             をしてください
                         </p>
                         {/* Session Status */}
-                        <AuthSessionStatus
-                            className="my-2"
-                            status={statusMessage}
-                        />
+                        {router.query.reset?.length > 0 && (
+                            <AuthSessionStatus
+                                className="my-2"
+                                status={decodeURIComponent(
+                                    atob(router.query.reset),
+                                )}
+                            />
+                        )}
+
                         <form onSubmit={submitForm}>
                             <div className="mb-2">
                                 <p className="c-text u-text--white">Email</p>
