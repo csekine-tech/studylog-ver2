@@ -12,7 +12,7 @@ import dateFormatText from '@/functions/date-format-text'
 
 export default function MyPage() {
     const { user } = useAuth({ middleware: 'auth' })
-
+    let allnodonecount = 0
     const { getTaskList } = useTask()
     const [taskList, setTaskList] = useState([])
     const { getWorkbookList } = useWorkbook()
@@ -106,11 +106,11 @@ export default function MyPage() {
                                                 index => {
                                                     let taskrow =
                                                         taskList[index]
-                                                    let donecount = 0
+                                                    let nodonecount = 0
                                                     let inner = taskrow.map(
                                                         task => {
                                                             if (!task.done_at) {
-                                                                donecount++
+                                                                nodonecount++
                                                                 return (
                                                                     <TaskCard
                                                                         key={
@@ -176,7 +176,9 @@ export default function MyPage() {
                                                             }
                                                         },
                                                     )
-                                                    if (donecount > 0) {
+                                                    if (nodonecount > 0) {
+                                                        allnodonecount++
+
                                                         return (
                                                             <div key={index}>
                                                                 <p className="c-title">
@@ -190,15 +192,12 @@ export default function MyPage() {
                                                             </div>
                                                         )
                                                     } else {
-                                                        return (
-                                                            <p className="c-text">
-                                                                タスクは登録されていません
-                                                            </p>
-                                                        )
+                                                        return
                                                     }
                                                 },
                                             )}
-                                            {taskList.length === 0 && (
+                                            {(taskList.length === 0 ||
+                                                allnodonecount == 0) && (
                                                 <p className="c-text">
                                                     タスクは登録されていません
                                                 </p>
