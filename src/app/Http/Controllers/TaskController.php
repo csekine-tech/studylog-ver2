@@ -34,10 +34,33 @@ class TaskController extends Controller
                 $task->user_id = Auth::user()->id;
                 $task->planned_at = $request->input('selected_date');
                 $task->save();
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'store task successfully!'
-                ]);
+
+                $tasks = Task::where('question_id', $qId)->get();
+                if ($tasks) {
+                    $task = $tasks
+                        ->where('done_at', null)
+                        ->whereNotNull('planned_at')
+                        ->sortBy('planned_at')
+                        ->first();
+                    if ($task) {
+                        $q->next_plan_date = $task->planned_at;
+                        $q->save();
+                        return response()->json([
+                            'status' => 200,
+                            'message' => 'store task successfully!'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status' => 404,
+                            'message' => 'no task'
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'no tasks'
+                    ]);
+                }
             }
         }
     }

@@ -29,8 +29,11 @@
     z-index:10000;
     transform: translate(-50%, -50%);
     max-height: 90vh;
-    overflow-y: scroll;
-    @include md{
+    overflow-x: visible;
+
+    @include md {
         width: 100%;
+        overflow-y: scroll;
+
     }
 }

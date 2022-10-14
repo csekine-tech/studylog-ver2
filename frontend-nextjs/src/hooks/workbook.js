@@ -63,10 +63,7 @@ export const useWorkbook = ({} = {}) => {
                     )
                 } catch (error) {
                     if (error.response.status !== 422) throw error
-                    setErrors(
-                        ...errors,
-                        Object.values(error.response.data.errors).flat(),
-                    )
+                    setErrors(Object.values(error.response.data.errors).flat())
                     return
                 }
                 setStatus(imageResult.data.status)
@@ -94,21 +91,6 @@ export const useWorkbook = ({} = {}) => {
                 setErrors(Object.values(error.response.data.errors).flat())
             })
     }
-
-    // const updateWorkbook = async (id, workbook) => {
-    //     await csrf()
-    //     axios
-    //         .post(`/api/workbook/update/${id}`, workbook)
-    //         .then(res => {
-    //             res.data
-    //         })
-    //         .then(getWorkbookSubjectRelations())
-    //         .catch(error => {
-    //             if (error.response.status !== 422) throw error
-
-    //             setErrors(Object.values(error.response.data.errors).flat())
-    //         })
-    // }
 
     const updateWorkbook = async (
         { setStatus, setErrors },
@@ -140,10 +122,7 @@ export const useWorkbook = ({} = {}) => {
                     )
                 } catch (error) {
                     if (error.response.status !== 422) throw error
-                    setErrors(
-                        ...errors,
-                        Object.values(error.response.data.errors).flat(),
-                    )
+                    setErrors(Object.values(error.response.data.errors).flat())
                     return
                 }
                 setStatus(imageResult.data.status)

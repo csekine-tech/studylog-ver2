@@ -116,7 +116,7 @@ const WorkbookPlan = () => {
                                 <WorkbookList
                                     workbookList={workbookList}
                                     getWorkbookList={getWorkbookListHandler}
-                                    className='d-none d-md-block'
+                                    className="d-none d-md-block"
                                 />
                                 <div className="col-md-9 pl-md-2">
                                     <div className="c-box mb-3">
@@ -182,7 +182,7 @@ const WorkbookPlan = () => {
                                             </div>
                                             {workbookData.id && (
                                                 <p
-                                                    className="c-link"
+                                                    className="c-text c-link"
                                                     onClick={() => {
                                                         openWorkbookEditModalHandler()
                                                     }}>
@@ -205,10 +205,11 @@ const WorkbookPlan = () => {
                                                     </button>
                                                 </div>
                                             )}
-                                            <div style={{
-                                                        width: '100%',
-                                                        overflowX: 'scroll',
-                                                    }}>
+                                            <div
+                                                style={{
+                                                    width: '100%',
+                                                    overflowX: 'scroll',
+                                                }}>
                                                 <table
                                                     className="c-table my-3"
                                                     style={{
@@ -237,6 +238,7 @@ const WorkbookPlan = () => {
                                                                             question,
                                                                             index,
                                                                         ) => {
+                                                                            console.log(question);
                                                                             return (
                                                                                 <PlanRow
                                                                                     is_finished={

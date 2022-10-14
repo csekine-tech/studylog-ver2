@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
+import Loading from '../Loading'
 
 const AuthMobileHeader = () => {
     const [isOpen, setIsOpen] = useState(false)
     const { logout } = useAuth()
+    const [status, setStatus] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     return (
         <>
@@ -53,9 +56,22 @@ const AuthMobileHeader = () => {
 
                             <li
                                 className="l-header__menu__mobile__item"
-                                onClick={logout}>
+                                onClick={async () => {
+                                    if (!isLoading) {
+                                        setIsLoading(true)
+                                        await logout({
+                                            setStatus,
+                                        })
+                                        await setIsLoading(false)
+                                    }
+                                }}
+                                >
                                 <p className="l-header__menu__mobile__item__link">
-                                    ログアウト
+                                {isLoading ? (
+                                                            <Loading color="black" />
+                                                        ) : (
+                                                            'ログアウト'
+                                                        )}
                                 </p>
                             </li>
                         </ul>

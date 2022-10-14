@@ -89,7 +89,7 @@ const TaskCardMini = ({
             <div className={`c-card--sm u-bg--${color}`}>
                 <div className="">
                     <Link href={`/workbook/plan/${workbook_id}`}>
-                        <div className="mb-1">
+                        <div className="mb-1 c-card__link">
                             <p className="c-card__title">
                                 {formatTitleLength(title)}
                             </p>

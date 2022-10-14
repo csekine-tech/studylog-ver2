@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import GuestHeader from '@/components/Header/GuestHeader'
+import Loading from '@/components/Loading'
 
 const PasswordReset = () => {
     const router = useRouter()
@@ -13,18 +14,19 @@ const PasswordReset = () => {
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState([])
-    const [status, setStatus] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
-    const submitForm = event => {
+    const submitForm = async event => {
+        setIsLoading(true)
         event.preventDefault()
 
-        resetPassword({
+        await resetPassword({
             email,
             password,
             password_confirmation: passwordConfirmation,
             setErrors,
-            setStatus,
         })
+        await setIsLoading(false)
     }
 
     useEffect(() => {
@@ -33,12 +35,10 @@ const PasswordReset = () => {
 
     useEffect(() => {
         return () => {
-            setName('')
             setEmail('')
             setPassword('')
             setPasswordConfirmation('')
             setErrors([])
-            setStatus(null)
         }
     }, [])
 
@@ -98,8 +98,15 @@ const PasswordReset = () => {
                         </div>
 
                         <div className="mb-1">
-                            <button className="c-button--wide" type="submit">
-                                パスワードを再設定する
+                            <button
+                                className="c-button--wide"
+                                type="submit"
+                                disabled={isLoading}>
+                                {isLoading ? (
+                                    <Loading />
+                                ) : (
+                                    'パスワードを再設定する'
+                                )}
                             </button>
                         </div>
                     </form>

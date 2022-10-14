@@ -3,15 +3,20 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/auth'
 import { useRouter } from 'next/router'
 import AuthMobileHeader from './AuthMobileHeader'
+import Loading from '../Loading'
 
 const AuthHeader = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false)
     const { logout } = useAuth()
     const route = useRouter().route
+    const [status, setStatus] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         return () => {
             setIsPopupOpen(false)
+            setIsLoading(false)
+            setStatus(null)
         }
     }, [])
 
@@ -75,11 +80,23 @@ const AuthHeader = () => {
 
                                                 <li
                                                     className="l-header__menu__item__popup__item"
-                                                    onClick={logout}>
+                                                    onClick={async () => {
+                                                        if (!isLoading) {
+                                                            setIsLoading(true)
+                                                            await logout({
+                                                                setStatus,
+                                                            })
+                                                            await setIsLoading(false)
+                                                        }
+                                                    }}>
                                                     <div
                                                         href=""
                                                         className="l-header__menu__item__popup__item__link">
-                                                        ログアウト
+                                                        {isLoading ? (
+                                                            <Loading color="black" />
+                                                        ) : (
+                                                            'ログアウト'
+                                                        )}
                                                     </div>
                                                 </li>
                                             </ul>

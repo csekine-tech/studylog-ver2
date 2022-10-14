@@ -181,6 +181,8 @@
       &__item {
         padding: 2rem 3rem;
         display: block;
+        cursor: pointer;
+
 
         &__link {
           @include font(14)

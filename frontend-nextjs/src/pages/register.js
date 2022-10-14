@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useState, useEffect } from 'react'
 import GuestHeader from '@/components/Header/GuestHeader'
+import Loading from '@/components/Loading'
 
 const Register = () => {
     const { register, googleLogin } = useAuth({
@@ -15,13 +16,13 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [status, setStatus] = useState(null)
-    const [errors, setErrors] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [errors, setErrors] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
 
-    const submitForm = event => {
-        setLoading(true)
+    const submitForm = async event => {
+        setIsLoading(true)
         event.preventDefault()
-        register({
+        await register({
             name,
             email,
             password,
@@ -32,10 +33,10 @@ const Register = () => {
     }
 
     useEffect(() => {
-        if (errors.length > 0) {
-            setLoading(false)
+        if (errors !== {}) {
+            setIsLoading(false)
         } else if (status) {
-            setLoading(false)
+            setIsLoading(false)
         }
     }, [status, errors])
 
@@ -45,8 +46,9 @@ const Register = () => {
             setEmail('')
             setPassword('')
             setPasswordConfirmation('')
-            setErrors([])
+            setErrors({})
             setStatus(null)
+            setIsLoading(false)
         }
     }, [])
 
@@ -139,8 +141,13 @@ const Register = () => {
                             <div className="mb-1">
                                 <button
                                     className="c-button--wide"
-                                    type="submit">
-                                    新規会員登録する
+                                    type="submit"
+                                    disabled={isLoading}>
+                                    {isLoading ? (
+                                        <Loading />
+                                    ) : (
+                                        '新規会員登録する'
+                                    )}
                                 </button>
                             </div>
                             <div className="">

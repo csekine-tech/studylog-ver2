@@ -39,6 +39,12 @@ export default function MyPage() {
     const getWorkbookListHandler = () => {
         getWorkbookList({ setWorkbookList })
     }
+    const rateUpdateHandler = () => {
+        getWorkbookList({ setWorkbookList })
+        getTodaysTaskList({ setTodaysTaskList })
+        getResult({ setResult })
+        console.log('rateupdated');
+    }
     useEffect(() => {
         getTodaysTaskList({ setTodaysTaskList })
         getResult({ setResult })
@@ -155,6 +161,9 @@ export default function MyPage() {
                                                                         .chapter
                                                                         .workbook
                                                                         .id
+                                                                }
+                                                                rateUpdateHandler={
+                                                                    rateUpdateHandler
                                                                 }
                                                             />
                                                         )

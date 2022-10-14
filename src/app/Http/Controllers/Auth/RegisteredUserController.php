@@ -39,12 +39,16 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return response()->noContent();
+        return response()->json([
+            'status' => 200
+        ]);
     }
 
     public function destroy()
     {
         User::find(Auth::id())->delete();
-        return response()->noContent();
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }

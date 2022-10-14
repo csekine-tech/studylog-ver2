@@ -18,6 +18,7 @@ const TaskCard = ({
     has_chapter,
     reload,
     workbook_id,
+    rateUpdateHandler,
 }) => {
     const { setRate } = useTask()
     const [status, setStatus] = useState(null)
@@ -27,12 +28,11 @@ const TaskCard = ({
     const [loading, setLoading] = useState(false)
     const [starRating, setStarRating] = useState(rate)
 
-
-    const onChange = e => {
+    const onChange = async e => {
         setStarRating(e)
 
         setErrors([])
-        setRate(
+        await setRate(
             { id: id, rate: e, done_at: dateFormat(new Date()) },
             { setStatus, setErrors, setReturnData },
         )
@@ -52,10 +52,12 @@ const TaskCard = ({
                         に設定しました
                     </p>,
                 )
+                await rateUpdateHandler()
             } else {
                 await setLoading(false)
 
                 toastCtx.addToast(<p>満点評価です！お疲れ様でした！</p>)
+                await rateUpdateHandler()
             }
         } else if (status === null) {
         } else {
@@ -87,8 +89,10 @@ const TaskCard = ({
             <div className={`c-card u-bg--${color}`}>
                 <div className="d-flex justify-content-between align-items-center">
                     <Link href={`/workbook/plan/${workbook_id}`}>
-                        <div>
-                            <p className="c-card__title">{formatTitleLength(title)}</p>
+                        <div className="c-card__link">
+                            <p className="c-card__title">
+                                {formatTitleLength(title)}
+                            </p>
                             {has_chapter === 1 && (
                                 <p className="c-card__subtitle">
                                     {chapter && chapter + '章 '}

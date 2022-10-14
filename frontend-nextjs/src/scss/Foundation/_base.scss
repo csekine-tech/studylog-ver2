@@ -29,8 +29,8 @@ main {
   padding-bottom: 7rem;
   margin-top: 17rem;
 
-  @include md{
-    padding-top:30px;
+  @include md {
+    padding-top: 30px;
     padding-bottom: 30px;
     margin-top: 60px;
   }
@@ -245,6 +245,7 @@ input[type="date"] {
     min-width: 100%;
     width: 100%;
     margin-bottom: 10px;
+    min-height: 14px;
 
   }
 }
@@ -300,4 +301,8 @@ input[type="date"] {
   @include md {
     display: none;
   }
+}
+
+input[type="file"] {
+  @include font(14);
 }

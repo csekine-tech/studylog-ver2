@@ -190,7 +190,11 @@ export default function MyPage() {
                                                             </div>
                                                         )
                                                     } else {
-                                                        return
+                                                        return (
+                                                            <p className="c-text">
+                                                                タスクは登録されていません
+                                                            </p>
+                                                        )
                                                     }
                                                 },
                                             )}

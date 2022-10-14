@@ -2,6 +2,8 @@ import InputError from '@/components/InputError'
 import { useAuth } from '@/hooks/auth'
 import { useState } from 'react'
 import GuestHeader from '@/components/Header/GuestHeader'
+import AuthSessionStatus from '@/components/AuthSessionStatus'
+import Loading from '@/components/Loading'
 
 const ForgotPassword = () => {
     const { forgotPassword } = useAuth({
@@ -12,11 +14,15 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('')
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
+    const [statusMessage, setStatusMessage] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
-    const submitForm = event => {
+    const submitForm = async event => {
+        setIsLoading(true)
         event.preventDefault()
 
-        forgotPassword({ email, setErrors, setStatus })
+        await forgotPassword({ email, setErrors, setStatusMessage })
+        await setIsLoading(false)
     }
 
     return (
@@ -31,6 +37,11 @@ const ForgotPassword = () => {
                         <p className="c-text u-text--white mb-2">
                             パスワードの再設定用リンクをご登録のメールアドレスに送信します。ご登録のメールアドレスを記入してください。
                         </p>
+                        {/* Session Status */}
+                        <AuthSessionStatus
+                            className="my-2"
+                            status={statusMessage}
+                        />
                         <form onSubmit={submitForm}>
                             <div className="mb-3">
                                 <p className="c-text u-text--white">Email</p>
@@ -47,8 +58,15 @@ const ForgotPassword = () => {
                                 <InputError messages={errors.email} />
                             </div>
                             <div className="mb-1">
-                                <button className="c-button--wide" type="submit">
-                                    パスワード再設定リンクを送信する
+                                <button
+                                    className="c-button--wide"
+                                    type="submit"
+                                    disabled={isLoading}>
+                                    {isLoading ? (
+                                        <Loading />
+                                    ) : (
+                                        'パスワード再設定リンクを送信する'
+                                    )}
                                 </button>
                             </div>
                         </form>

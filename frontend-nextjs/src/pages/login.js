@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import GuestHeader from '@/components/Header/GuestHeader'
 import Loading from '@/components/Loading'
+import AuthSessionStatus from '@/components/AuthSessionStatus'
 
 const Login = () => {
     const router = useRouter()
@@ -17,41 +18,32 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
-    const [errors, setErrors] = useState([])
+    const [errors, setErrors] = useState({})
     const [status, setStatus] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [statusMessage, setStatusMessage] = useState(null)
 
     useEffect(() => {
         if (router.query.reset?.length > 0 && errors.length === 0) {
-            setStatus(atob(router.query.reset))
+            setStatusMessage(decodeURIComponent(atob(router.query.reset)))
         } else {
-            setStatus(null)
-        }
-        return () => {
-            setLoading(false)
+            setStatusMessage(null)
         }
     })
 
     const submitForm = async event => {
-        setLoading(true)
+        setIsLoading(true)
         event.preventDefault()
 
-        login({
+        await login({
             email,
             password,
             remember: shouldRemember,
             setErrors,
             setStatus,
         })
+        await setIsLoading(false)
     }
-
-    useEffect(() => {
-        if (errors.length > 0) {
-            setLoading(false)
-        } else if (status) {
-            setLoading(false)
-        }
-    }, [status, errors])
 
     useEffect(() => {
         return () => {
@@ -59,8 +51,9 @@ const Login = () => {
             setPassword('')
             setShouldRemember(false)
             setStatus(null)
-            setErrors([])
-            setLoading(false)
+            setStatusMessage(null)
+            setErrors({})
+            setIsLoading(false)
         }
     }, [])
 
@@ -83,6 +76,11 @@ const Login = () => {
                             </Link>
                             をしてください
                         </p>
+                        {/* Session Status */}
+                        <AuthSessionStatus
+                            className="my-2"
+                            status={statusMessage}
+                        />
                         <form onSubmit={submitForm}>
                             <div className="mb-2">
                                 <p className="c-text u-text--white">Email</p>
@@ -136,15 +134,18 @@ const Login = () => {
                             <div className="mb-1">
                                 <button
                                     className="c-button--wide"
-                                    type="submit">
-                                    {loading ? <Loading /> : 'ログインする'}
+                                    type="submit"
+                                    disabled={isLoading}>
+                                    {isLoading ? <Loading /> : 'ログインする'}
                                 </button>
                             </div>
                             <div className="">
                                 <div
                                     className="c-button--wide-ghost mb-3"
                                     onClick={() => {
-                                        googleLogin()
+                                        if (!isLoading) {
+                                            googleLogin()
+                                        }
                                     }}>
                                     Googleアカウントでログインする
                                 </div>

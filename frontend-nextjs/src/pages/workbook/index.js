@@ -91,7 +91,7 @@ export default function MyPage() {
                                             <p className="c-box__title">
                                                 登録済みの教材
                                             </p>
-                                            <p className="c-box__subtitle">
+                                            <p className="c-box__subtitle link">
                                                 <span
                                                     onClick={() => {
                                                         setFilteringMode(1)

@@ -24,7 +24,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return ['req' => $tmp];
+        return [
+            'req' => $tmp,
+            'status' => 200
+        ];
     }
 
     public function update(EditUserRequest $request)
@@ -55,6 +58,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return response()->noContent();
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }
