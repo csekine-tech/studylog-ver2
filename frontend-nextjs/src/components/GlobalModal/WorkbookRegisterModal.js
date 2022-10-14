@@ -242,7 +242,6 @@ const WorkbookRegisterModal = ({ isOpen, closeHandler, idName }) => {
                                                 </option>
                                             )
                                         })}
-                                        <option value="数学">数学</option>
                                     </select>
                                 </div>
                             </div>
