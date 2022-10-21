@@ -89,7 +89,7 @@ const TaskCard = ({
             <div className={`c-card u-bg--${color}`}>
                 <div className="d-flex justify-content-between align-items-center">
                     <Link href={`/workbook/plan/${workbook_id}`}>
-                        <div className="c-card__link">
+                        <div className="c-card__link mb-1">
                             <p className="c-card__title">
                                 {formatTitleLength(title)}
                             </p>

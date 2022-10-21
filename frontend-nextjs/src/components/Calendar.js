@@ -51,7 +51,7 @@ const Calendar = ({
                                   task.question.chapter.number +
                                   '-' +
                                   task.question.number
-                                : task.workbook_name +
+                                : formatTitleLength(task.workbook_name) +
                                   ' ' +
                                   task.question.number
                         obj.start = task.planned_at
@@ -77,7 +77,7 @@ const Calendar = ({
     }, [taskList])
 
     const formatTitleLength = title => {
-        const limitLength = 12
+        const limitLength = 7
         const titleLen = title.length
         if (titleLen > limitLength) {
             return title.slice(0, limitLength) + '...'

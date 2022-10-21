@@ -132,7 +132,14 @@ const WorkbookPlan = () => {
                                             <div className="row">
                                                 <div className="col-3 col-md-2">
                                                     <img
-                                                        src="/img/img-dummy.png"
+                                                        src={
+                                                            workbookData.image_url
+                                                                ? process.env
+                                                                      .NEXT_PUBLIC_STORAGE_URL +
+                                                                  '/' +
+                                                                  workbookData.image_url
+                                                                : '/img/img-dummy.png'
+                                                        }
                                                         alt=""
                                                         className="w-100"
                                                     />
@@ -238,7 +245,9 @@ const WorkbookPlan = () => {
                                                                             question,
                                                                             index,
                                                                         ) => {
-                                                                            console.log(question);
+                                                                            console.log(
+                                                                                question,
+                                                                            )
                                                                             return (
                                                                                 <PlanRow
                                                                                     is_finished={
