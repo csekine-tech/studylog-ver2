@@ -43,7 +43,6 @@ export default function MyPage() {
         getWorkbookList({ setWorkbookList })
         getTodaysTaskList({ setTodaysTaskList })
         getResult({ setResult })
-        console.log('rateupdated');
     }
     useEffect(() => {
         getTodaysTaskList({ setTodaysTaskList })

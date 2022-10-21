@@ -79,7 +79,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         axios
             .post('/forgot-password', { email })
             .then(response => {
-                console.log(response.data)
                 setStatusMessage(response.data.statusMessage)
             })
             .catch(error => {

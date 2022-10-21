@@ -245,9 +245,7 @@ const WorkbookPlan = () => {
                                                                             question,
                                                                             index,
                                                                         ) => {
-                                                                            console.log(
-                                                                                question,
-                                                                            )
+
                                                                             return (
                                                                                 <PlanRow
                                                                                     is_finished={
