@@ -115,12 +115,9 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .then(response => setStatus(response.data.status))
     }
 
-    const logout = async ({ setStatus }) => {
-        setStatus(null)
+    const logout = async () => {
         if (!error) {
-            await axios
-                .post('/logout')
-                .then(response => setStatus(response.data.status))
+            await axios.post('/logout').then(() => mutate())
         }
 
         window.location.pathname = '/login'

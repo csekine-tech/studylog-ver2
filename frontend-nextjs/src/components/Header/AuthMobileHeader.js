@@ -59,19 +59,16 @@ const AuthMobileHeader = () => {
                                 onClick={async () => {
                                     if (!isLoading) {
                                         setIsLoading(true)
-                                        await logout({
-                                            setStatus,
-                                        })
+                                        await logout()
                                         await setIsLoading(false)
                                     }
-                                }}
-                                >
+                                }}>
                                 <p className="l-header__menu__mobile__item__link">
-                                {isLoading ? (
-                                                            <Loading color="black" />
-                                                        ) : (
-                                                            'ログアウト'
-                                                        )}
+                                    {isLoading ? (
+                                        <Loading color="black" />
+                                    ) : (
+                                        'ログアウト'
+                                    )}
                                 </p>
                             </li>
                         </ul>

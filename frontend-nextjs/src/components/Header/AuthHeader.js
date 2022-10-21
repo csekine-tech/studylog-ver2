@@ -83,10 +83,10 @@ const AuthHeader = () => {
                                                     onClick={async () => {
                                                         if (!isLoading) {
                                                             setIsLoading(true)
-                                                            await logout({
-                                                                setStatus,
-                                                            })
-                                                            await setIsLoading(false)
+                                                            await logout()
+                                                            await setIsLoading(
+                                                                false,
+                                                            )
                                                         }
                                                     }}>
                                                     <div
@@ -124,7 +124,9 @@ const AuthHeader = () => {
                             <Link href="/workbook">
                                 <li
                                     className={`l-header--sub__menu__item ${
-                                        route === '/workbook' ? 'current' : ''
+                                        route.indexOf('/workbook') !== -1
+                                            ? 'current'
+                                            : ''
                                     }`}>
                                     <a className="l-header--sub__menu__item__link">
                                         本棚
