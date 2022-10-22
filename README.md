@@ -53,6 +53,10 @@
 
 <img width="1512" alt="guest" src="https://user-images.githubusercontent.com/87169706/197311159-1f9ac3dc-2af6-4a33-9dd0-d0c19b01dd2f.png">
 
+#### ログインページ
+Googleログインもできます。
+<img width="1512" alt="スクリーンショット 2022-10-22 11 06 57" src="https://user-images.githubusercontent.com/87169706/197313495-0ea449b9-0e03-4331-b17c-2f0602393d8a.png">
+
 #### ホーム画面
 
 <img width="1512" alt="home" src="https://user-images.githubusercontent.com/87169706/197311165-2016d65d-992f-499f-bc1b-e431f2953edc.png">
@@ -155,10 +159,15 @@ API 通信に axios を使用しました。カスタムフックにまとめて
 
 - Laravel,sanctum
 - MySQL
+- OAuth
+- Socialite
+- MailHog
 
 Laravel は API として使用しました。
 開発過程で Postman を使用しました。
 Controller はまだまだリファクタリングできる気がするので今後の課題です。
+GoogleのAPIを用いてGoogleの登録情報でログインできるようにしています。
+パスワードを忘れた際にメール送信機能を使用します。
 
 ## インフラ/その他
 
