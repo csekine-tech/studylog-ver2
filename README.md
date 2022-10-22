@@ -1,7 +1,7 @@
 # Study Log の概要
 
 [StudyLog](https://csworks.tech/)
-主な使用技術は、バックエンド:<b>PHP/Laravel</b>, フロントエンド:<b>JavaScript/React/Next</b>,開発環境は<b>Docker</b>,本番環境は<b>AWS(EC2,S3,RDS など)</b>です。
+主な使用技術は、バックエンド:<b>PHP/Laravel</b>, フロントエンド:<b>JavaScript/React/Next</b>,開発環境は<b>Docker</b>,本番環境は<b>AWS(EC2,S3,RDS など)</b>です。LaravelはAPIとして使用しました。
 
 ## 制作者について
 
