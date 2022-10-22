@@ -158,11 +158,15 @@ XD でモックを作成しました。
 - SCSS
 - FullCalendar
 
-HTML と CSS はゴリゴリ書きました。
-レスポンシブに Bootstrap を使っています。
-React 関連では、<b>useState,useEffect,useReducer,useContext,カスタムフック等</b>を使用しました。
-認証には[Laravel Breeze - Next.js Edition](https://github.com/laravel/breeze-next)を使用しました。
-API 通信に axios を使用しました。カスタムフックにまとめています。<br>
+HTML と CSS はゴリゴリ書きました。<br/>
+レスポンシブに Bootstrap を使っています。<br/>
+
+React 関連では、<b>useState,useEffect,useReducer,useContext,カスタムフック等</b>を使用しました。<br/>
+
+認証には[Laravel Breeze - Next.js Edition](https://github.com/laravel/breeze-next)を使用しました。<br/>
+
+API 通信に axios を使用しました。カスタムフックにまとめています<br/>
+
 また、カレンダーを実装したく、第一弾ポートフォリオに引き続き、FullCalendar を使用しました。Google カレンダーに似ていてかなり便利！
 
 トーストを自力で作るのは地味に骨の折れる作業でした、、、（ちょうどいいライブラリがなかった）
