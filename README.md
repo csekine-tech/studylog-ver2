@@ -150,6 +150,8 @@ XD でモックを作成しました。
 
 ## フロントエンド
 
+クライアントサイドで複雑な状態管理を行いたかったため、React を選定しました。
+
 - JavaScript
 - React
 - Next.js
@@ -174,6 +176,8 @@ API 通信に axios を使用しました。カスタムフックにまとめて
 
 ## バックエンド
 
+バックエンドには API として使用したことのなかった Laravel を採用しました。
+
 - Laravel,sanctum
 - MySQL
 - OAuth
@@ -189,6 +193,8 @@ Google の API を用いて Google の登録情報でログインできるよう
 Controller はまだまだリファクタリングできる気がするので今後の課題です。
 
 ## インフラ/その他
+
+インフラは特に学習過程のため、まずは 1 から構築をして構造を理解するために EC2 を採用しました。
 
 - AWS(EC2, S3, SES, VPC, RDS, Route 53, Certificate Manager 等)
 - nginx
