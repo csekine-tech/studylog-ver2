@@ -46,17 +46,75 @@
 そこで本アプリを制作しました！
 自動化できれば生徒が<b>さらに学習に集中できるんじゃないか？</b>という想いからです。
 
-<!-- ## Study Log ができること -->
+## Study Log ができること
 
-<!-- ### 問題集の問題リストから計画を立てられる
+### 画面構成
+#### 未ログインページ
 
-星マーク入力で done 判定をして、自動的に NewTodo が生成される。<br>
-![studylog2](https://user-images.githubusercontent.com/87169706/182076411-8bd75937-c59a-4156-903f-ebd8b1347fe0.gif) -->
+<img width="1512" alt="guest" src="https://user-images.githubusercontent.com/87169706/197311159-1f9ac3dc-2af6-4a33-9dd0-d0c19b01dd2f.png">
 
-<!-- ### 過去に計画された Todo で未実施のものは赤字表示
+#### ホーム画面
 
-評価登録すると黒字になり打ち消し線がつく
-![studylog3](https://user-images.githubusercontent.com/87169706/182076417-8ea12da7-80f4-401c-ba5a-65be901ab1c7.gif) -->
+<img width="1512" alt="home" src="https://user-images.githubusercontent.com/87169706/197311165-2016d65d-992f-499f-bc1b-e431f2953edc.png">
+
+#### 教材一覧
+
+<img width="1512" alt="wb" src="https://user-images.githubusercontent.com/87169706/197311166-719d4037-d18a-4e95-a29f-6b3ae26da73b.png">
+
+#### 教材登録
+
+<img width="1512" alt="wbreg" src="https://user-images.githubusercontent.com/87169706/197311160-094bdc4f-9f9e-44aa-a39c-315d95f3e65e.png">
+
+#### Google カレンダーに似たカレンダービューでタスクを可視化
+
+<img width="1512" alt="cal" src="https://user-images.githubusercontent.com/87169706/197311164-273080e8-6ca6-4b7c-85c8-db009dbbd426.png">
+
+#### 教材ごとの最新予定をチェック
+
+<img width="1512" alt="plan" src="https://user-images.githubusercontent.com/87169706/197311167-cbb6e1fa-6d90-4a1b-8184-51efd3a5f0e7.png">
+
+#### 満点評価の問題にはチェックがつく
+
+<img width="1512" alt="plan2" src="https://user-images.githubusercontent.com/87169706/197311162-48404f70-9b2e-45de-a5b9-2cdadb029a05.png">
+
+#### タスクをまとめて入力する
+
+<img width="1512" alt="bulkmodal" src="https://user-images.githubusercontent.com/87169706/197311161-818bfb19-42d6-4b04-a786-c93e62905858.png">
+
+#### タスクを一覧で表示する
+
+<img width="1512" alt="task" src="https://user-images.githubusercontent.com/87169706/197311168-0d3d70d0-6b0a-4882-b5d2-59b0ba4a4800.png">
+
+
+### 動作例
+
+#### タスクを評価する
+
+評価後タスクカードが非表示となり、トーストが表示されます。
+満点評価の時は褒められてやる気アップ！
+![ver2_rate](https://user-images.githubusercontent.com/87169706/197311033-da37ff1e-23a8-4b00-ba13-faf72ee34fa0.gif)
+
+#### 教材を登録する
+
+教材の構成を章立て/通し番号から選べます。
+![ver2_wbregister](https://user-images.githubusercontent.com/87169706/197311045-97ede23a-a245-4cfc-b277-daa3335ff158.gif)
+
+#### タスクの予定日を個別で編集/まとめて登録
+
+動作完了後にトーストが表示されます。
+![ver2_wb](https://user-images.githubusercontent.com/87169706/197311042-198527a3-9a23-4a32-b5e5-2893a4960179.gif)
+
+#### カレンダービュー
+
+サイドバーには今日のタスクが表示され、ワンタッチで評価登録できます。
+カレンダーの日付欄をクリックすると、新しいタスクを登録することができます。
+![ver2_cal](https://user-images.githubusercontent.com/87169706/197311058-e4929f9e-7fdb-4499-9584-bf27d6f58eb2.gif)
+
+#### タスクを評価する
+
+![ver2_task](https://user-images.githubusercontent.com/87169706/197311051-784486d5-d55f-4e47-bc45-53f704f3e3bf.gif)
+
+
 
 # 技術について
 
@@ -69,8 +127,6 @@ XD でモックを作成しました。
 画面遷移先やコンポーネント、使用するメソッドなどを細かく決めておくと開発がかなり楽でした。
 
 ## DB 設計
-
-<!-- ![file_png](https://user-images.githubusercontent.com/87169706/182096237-b6525629-3f91-4820-8f67-de5981e7bda3.png) -->
 
 小規模アプリのため厳密な正規化はしませんでした。
 扱いやすいですが、機能拡張などを考えると正規化した方が良いのだと思います。
