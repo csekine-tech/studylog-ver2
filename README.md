@@ -56,15 +56,19 @@
 
 #### 未ログインページ
 
+集中力の上がる＆信頼度の高まる青を基調とした落ち着いたデザインにしました。
+
 <img width="1512" alt="guest" src="https://user-images.githubusercontent.com/87169706/197311159-1f9ac3dc-2af6-4a33-9dd0-d0c19b01dd2f.png">
 
 #### ログインページ
 
-Google ログインもできます。
+Google ログインもできます。是非ログインしてみてください！
 <img width="1512" alt="スクリーンショット 2022-10-22 11 06 57" src="https://user-images.githubusercontent.com/87169706/197313495-0ea449b9-0e03-4331-b17c-2f0602393d8a.png">
 
 #### ホーム画面
 
+ダッシュボード形式で、必要な情報にすぐにアクセスすることができます。<br/>
+あと何問マスターしていない問題があるのか、「学習の成果」から一目で確認できます。
 <img width="1512" alt="home" src="https://user-images.githubusercontent.com/87169706/197311165-2016d65d-992f-499f-bc1b-e431f2953edc.png">
 
 #### 教材一覧
@@ -85,13 +89,19 @@ Google ログインもできます。
 
 #### 満点評価の問題にはチェックがつく
 
+全ての問題にチェックがつく状態を目指していきます！
+
 <img width="1512" alt="plan2" src="https://user-images.githubusercontent.com/87169706/197311162-48404f70-9b2e-45de-a5b9-2cdadb029a05.png">
 
 #### タスクをまとめて入力する
 
+お休みする曜日を設定できるのがイチオシポイントです。
+
 <img width="1512" alt="bulkmodal" src="https://user-images.githubusercontent.com/87169706/197311161-818bfb19-42d6-4b04-a786-c93e62905858.png">
 
 #### タスクを一覧で表示する
+
+科目毎に色分けされているのでカラフルなタスク一覧になっています。
 
 <img width="1512" alt="task" src="https://user-images.githubusercontent.com/87169706/197311168-0d3d70d0-6b0a-4882-b5d2-59b0ba4a4800.png">
 
